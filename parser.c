@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:28:04 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/01/30 13:35:58 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/01/30 15:33:27 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,42 +64,14 @@ static int parse_scene_elements(int fd, t_game *game)
     return (0);
 }
 
-static int parse_and_validate_map(int fd, t_game *game)
+static int validate_map(int fd, t_game *game)
 {
     // Get map dimensions and check for empty lines
-    if (parse_map_lines(fd, game))
-        return (1);
-    
+    parse_map_lines(fd, game);
     // At this point game->map.width and game->map.height are set
     printf("Map dimensions: %d x %d\n", game->map.width, game->map.height); // Debug line
-    
     return (0);
 }
-
-/*
-static int parse_and_validate_map(int fd, t_game *game)
-{
-    t_list *map_lines = NULL;
-
-    ft_lstadd_back(&map_lines, ft_lstnew(ft_strdup(game->temp_map_line)));
-    parse_map_lines(fd, &map_lines);
-
-
-    // Validate map structure and player position
-    if (!parse_map_content(map_lines, &game->map))
-    {
-        ft_lstclear(&map_lines, free);
-        return (clean_exit_msg("Invalid map structure", game));
-    }
-    if (!validate_map(&game->map, &game->player))
-    {
-        ft_lstclear(&map_lines, free);
-        return (clean_exit_msg("Invalid map: player position error", game));
-    }
-
-    ft_lstclear(&map_lines, free);
-    return (0);
-}*/
 
 int parse_file(char *file, t_game *game)
 {
@@ -114,8 +86,10 @@ int parse_file(char *file, t_game *game)
     parse_scene_elements(fd, game);
     close(fd);
     fd = open(file, O_RDONLY);
-    // Parse and validate map
-    parse_and_validate_map(fd, game);
+    parse_map_lines(fd, game);
+    close(fd);
+    fd = open(file, O_RDONLY);
+    validate_map(fd, game);
     
     // Success cleanup
     free(game->temp_map_line);
