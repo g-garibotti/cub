@@ -104,14 +104,14 @@ int		get_map_width(char *filename);
 int		is_empty_line(char *line);
 char	*trim_whitespace(char *str);
 int		check_file_extension(char *filename);
-int		check_texture_file(char *path);
 int		is_valid_number(char *str);
 int		validate_textures(t_map *map);
 int		check_file_empty(char *filename);
 int		check_map_size(t_map *map);
 void	free_split(char **split);
-int	check_required_elements(t_map *map);
 int	parse_element(char *line, t_map *map);
+int parse_map_lines(int fd, t_game *game);
+int is_map_line(char *line);
 //int is_map_line(char *line);
 
 // Ray casting functions
