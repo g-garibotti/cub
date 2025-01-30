@@ -90,7 +90,6 @@ typedef struct s_game
 
 // Core parsing functions
 int		parse_file(char *filename, t_game *game);
-int		validate_map(t_map *map, t_player *player);
 int		parse_texture(char *line, t_map *map);
 int		parse_color(char *line, t_map *map);
 
@@ -113,6 +112,7 @@ int	parse_element(char *line, t_map *map);
 int parse_map_lines(int fd, t_game *game);
 int is_map_line(char *line);
 int skip_to_map_start(int fd);
+int fill_map_array(int fd, t_game *game);
 //int is_map_line(char *line);
 
 // Ray casting functions

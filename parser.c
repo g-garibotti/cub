@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:28:04 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/01/30 15:33:27 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/01/30 16:03:58 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,7 @@ static int parse_scene_elements(int fd, t_game *game)
 
 static int validate_map(int fd, t_game *game)
 {
-    // Get map dimensions and check for empty lines
-    parse_map_lines(fd, game);
-    // At this point game->map.width and game->map.height are set
-    printf("Map dimensions: %d x %d\n", game->map.width, game->map.height); // Debug line
+    fill_map_array(fd, game);
     return (0);
 }
 
