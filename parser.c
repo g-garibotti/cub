@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:28:04 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/01/29 14:17:24 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/01/30 11:11:49 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@ static int parse_scene_elements(int fd, t_game *game)
         if (is_map_line(line))
         {
             if (!check_required_elements(&game->map))
+            {
+                free(line);
                 clean_exit_msg("Missing required elements", game);
+            }
             game->temp_map_line = line;  // Store in game structure
             parsing_map = 1;
             continue;
@@ -51,27 +54,20 @@ static int parse_scene_elements(int fd, t_game *game)
 static int parse_and_validate_map(int fd, t_game *game)
 {
     t_list *map_lines = NULL;
-    char *line;
 
-    // Add the first map line to our list
-    if (game->temp_map_line)
-        ft_lstadd_back(&map_lines, ft_lstnew(ft_strdup(game->temp_map_line)));
-
-    // Collect remaining map lines
-    while ((line = get_next_line(fd)))
-    {
-        if (!is_empty_line(line))
-            ft_lstadd_back(&map_lines, ft_lstnew(ft_strdup(line)));
-        free(line);
-    }
-
-    // Validate map structure and content
-    if (!validate_map_continuity(map_lines))
-        clean_exit_msg("Invalid map: contains empty lines", game);
+    ft_lstadd_back(&map_lines, ft_lstnew(ft_strdup(game->temp_map_line)));
+    parse_map_lines(fd, &map_lines);
+    // Validate map structure and player position
     if (!parse_map_content(map_lines, &game->map))
-        clean_exit_msg("Invalid map structure", game);
+    {
+        ft_lstclear(&map_lines, free);
+        return (clean_exit_msg("Invalid map structure", game));
+    }
     if (!validate_map(&game->map, &game->player))
-        clean_exit_msg("Invalid map: player position error", game);
+    {
+        ft_lstclear(&map_lines, free);
+        return (clean_exit_msg("Invalid map: player position error", game));
+    }
 
     ft_lstclear(&map_lines, free);
     return (0);
