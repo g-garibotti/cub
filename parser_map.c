@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 10:59:36 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/01/30 12:34:31 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/01/30 13:36:39 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int parse_map_lines(int fd, t_game *game)
     char *line;
     int len;
     
+    skip_to_map_start(fd);
     printf("\n--- Starting Map Parsing ---\n");
     game->map.height = 1;
     game->map.width = ft_strlen_no_nl(game->temp_map_line);

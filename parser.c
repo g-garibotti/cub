@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:28:04 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/01/30 12:20:58 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/01/30 13:35:58 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ int parse_file(char *file, t_game *game)
         clean_exit_msg("Cannot open file", game);
     // Parse scene elements (textures and colors)
     parse_scene_elements(fd, game);
+    close(fd);
+    fd = open(file, O_RDONLY);
     // Parse and validate map
     parse_and_validate_map(fd, game);
     

@@ -112,6 +112,7 @@ void	free_split(char **split);
 int	parse_element(char *line, t_map *map);
 int parse_map_lines(int fd, t_game *game);
 int is_map_line(char *line);
+int skip_to_map_start(int fd);
 //int is_map_line(char *line);
 
 // Ray casting functions
