@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:47:01 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/01/29 14:00:09 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/01/30 12:34:10 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,32 @@ int	check_file_extension(char *filename)
 
 int is_map_line(char *line)
 {
+    // Skip leading whitespace
     while (*line && (*line == ' ' || *line == '\t'))
         line++;
+        
+    // Skip if empty line or just newline
+    if (*line == '\0' || *line == '\n')
+        return (0);
+        
+    // Check for valid map characters
     return (*line == '1' || *line == '0' || *line == ' ');
 }
 
-int	is_empty_line(char *line)
+int is_empty_line(char *line)
 {
-	int	i;
+    int i;
 
-	i = 0;
-	while (line[i] && (line[i] == ' ' || line[i] == '\t' || line[i] == '\n'))
-		i++;
-	return (line[i] == '\0');
+    i = 0;
+    if (!line)
+        return (1);
+    while (line[i] && line[i] != '\n')
+    {
+        if (line[i] != ' ' && line[i] != '\t')
+            return (0);
+        i++;
+    }
+    return (1);
 }
 
 char	*trim_whitespace(char *str)

@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 14:19:29 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/01/29 15:12:39 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/01/30 12:55:18 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,58 +26,43 @@ static int check_duplicate_color(char type, t_map *map)
     return (0);
 }
 
-static int check_trailing_chars_and_commas(char *str)
+static int ft_str_is_numeric(const char *str)
 {
-    int i;
-    int comma_count;
-
-    i = 0;
-    comma_count = 0;
-    while (str[i])
-    {
-        if (str[i] == ',')
-        {
-            comma_count++;
-            if (str[i + 1] == ',')
-                return (0);
-        }
-        i++;
-    }
-    i--;
-    while (i >= 0 && (str[i] == ' ' || str[i] == '\t'))
-        i--;
-    if (i < 0 || !ft_isdigit(str[i]))
+    if (!str || !*str)
         return (0);
-    return (comma_count == 2);
+    while (*str)
+    {
+        if (!ft_isdigit(*str))
+            return (0);
+        str++;
+    }
+    return (1);
 }
 
 static int parse_rgb_values(char *str, int *r, int *g, int *b)
 {
     char **split;
-    char *temp;
-    int valid;
+    int i;
 
+    // Check for consecutive commas
+    i = 0;
+    while (str[i])
+    {
+        if (str[i] == ',' && str[i + 1] == ',')
+            return (0);
+        i++;
+    }
     split = ft_split(str, ',');
     if (!split || !split[0] || !split[1] || !split[2] || split[3])
         return (ft_free_split(split), 0);
-    valid = 1;
+    // Check each value is numeric
+    if (!ft_str_is_numeric(split[0]) || !ft_str_is_numeric(split[1]) || !ft_str_is_numeric(split[2]))
+        return (ft_free_split(split), 0);
     *r = ft_atoi(split[0]);
-    temp = ft_itoa(*r);
-    if (!temp || ft_strcmp(temp, split[0]) != 0)
-        valid = 0;
-    free(temp);
     *g = ft_atoi(split[1]);
-    temp = ft_itoa(*g);
-    if (valid && (!temp || ft_strcmp(temp, split[1]) != 0))
-        valid = 0;
-    free(temp);
     *b = ft_atoi(split[2]);
-    temp = ft_itoa(*b);
-    if (valid && (!temp || ft_strcmp(temp, split[2]) != 0))
-        valid = 0;
-    free(temp);
     ft_free_split(split);
-    return (valid);
+    return (1);
 }
 
 int parse_color(char *line, t_map *map)
@@ -88,14 +73,14 @@ int parse_color(char *line, t_map *map)
     int     b;
 
     split = ft_split(line, ' ');
-    if (!split || !split[1] || ft_strlen(split[0]) != 1)
+    if (!split || !split[1] || split[2] || ft_strlen(split[0]) != 1)  // Same logic as texture parsing
         return (ft_free_split(split), 0);
     if (check_duplicate_color(split[0][0], map))
         return (ft_free_split(split), 0);
-    if (!check_trailing_chars_and_commas(split[1]))
-        return (ft_free_split(split), 0);
+
     if (!parse_rgb_values(split[1], &r, &g, &b) || !is_valid_rgb(r, g, b))
         return (ft_free_split(split), 0);
+
     if (split[0][0] == 'F')
         map->floor_color = (r << 16) | (g << 8) | b;
     else if (split[0][0] == 'C')

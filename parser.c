@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:28:04 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/01/30 12:05:50 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/01/30 12:20:58 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,25 +28,38 @@ static int parse_scene_elements(int fd, t_game *game)
     int parsing_map = 0;
 
     game->temp_map_line = NULL;
+    printf("\n--- Starting Scene Elements Parsing ---\n");
     while ((line = get_next_line(fd)) && !parsing_map)
     {
         if (is_map_line(line))
         {
+            printf("\nChecking required elements before map parsing:\n");
+            printf("North texture: %s\n", game->map.north.path);
+            printf("South texture: %s\n", game->map.south.path);
+            printf("West texture: %s\n", game->map.west.path);
+            printf("East texture: %s\n", game->map.east.path);
+            printf("Floor color: %d\n", game->map.floor_color);
+            printf("Ceiling color: %d\n", game->map.ceil_color);
+            
             if (!check_required_elements(&game->map))
             {
                 free(line);
-                clean_exit_msg("Missing required elements", game);
+                return (clean_exit_msg("Missing required elements", game));
             }
-            game->temp_map_line = line;  // Store in game structure
+            game->temp_map_line = line;
             parsing_map = 1;
             continue;
         }
-        else  // Try to parse as texture or color
+        if (!is_empty_line(line))
         {
+            printf("Parsing line: '%s'\n", line);
             if (!parse_element(line, &game->map))
-                clean_exit_msg("Invalid scene element", game);
-            free(line);
+            {
+                free(line);
+                return (clean_exit_msg("Invalid scene element", game));
+            }
         }
+        free(line);
     }
     return (0);
 }
