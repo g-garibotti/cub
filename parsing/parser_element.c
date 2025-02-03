@@ -6,11 +6,11 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:44:27 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/01/29 14:18:14 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/03 14:16:30 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/cub3d.h"
+#include "../includes/cub3d.h"
 
 int	parse_element(char *line, t_map *map)
 {

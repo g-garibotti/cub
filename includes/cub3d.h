@@ -74,24 +74,24 @@ typedef struct s_map
 
 typedef struct s_game
 {
-    void *mlx;       // MLX pointer
-    void *win;       // window pointer
-    void *img;       // main image pointer
-    int *addr;       // image data address
-    int bpp;         // bits per pixel
-    int line_len;    // line length
-    int endian;      // endianness
-    t_player player; // player data
-    t_map map;       // map data
-    t_ray *rays;     // array of rays
-    char *temp_map_line; // temporary storage for map parsing
-	int fd;
-}       t_game;
+	void *mlx;           // MLX pointer
+	void *win;           // window pointer
+	void *img;           // main image pointer
+	int *addr;           // image data address
+	int bpp;             // bits per pixel
+	int line_len;        // line length
+	int endian;          // endianness
+	t_player player;     // player data
+	t_map map;           // map data
+	t_ray *rays;         // array of rays
+	char *temp_map_line; // temporary storage for map parsing
+	int	fd;
+}		t_game;
 
 /* Function Prototypes */
 
 // Core parsing functions
-void		parse_file(char *filename, t_game *game);
+void	parse_file(char *filename, t_game *game);
 int		parse_texture(char *line, t_map *map);
 int		parse_color(char *line, t_map *map);
 
@@ -109,17 +109,18 @@ int		validate_textures(t_map *map);
 int		check_file_empty(char *filename);
 int		check_map_size(t_map *map);
 void	free_split(char **split);
-int	parse_element(char *line, t_map *map);
-void parse_map_lines(t_game *game);
-int is_map_line(char *line);
-int skip_to_map_start(t_game *game);
-void fill_map_array(t_game *game);
+int		parse_element(char *line, t_map *map);
+void	parse_map_lines(t_game *game);
+int		is_map_line(char *line);
+int		skip_to_map_start(t_game *game);
+void	fill_map_array(t_game *game);
 void	map_validation(t_game *game);
 char	**create_map_copy(t_game *game);
 void	flood_fill(char **map, int x, int y, t_game *game);
 void	free_map_copy(char **map_copy, int height);
-void init_player_direction(t_player *player);
-//int is_map_line(char *line);
+void	init_player_direction(t_player *player);
+int		check_player_position(t_game *game, int x, int y);
+void	update_player_pos(t_game *game, int x, int y);
 
 // Ray casting functions
 void	cast_rays(t_game *game);
