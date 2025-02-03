@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:28:04 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/03 12:37:53 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/03 13:59:11 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,9 @@ static int parse_scene_elements(t_game *game)
         {
             if (!check_required_elements(&game->map))
                 return (free(line), clean_exit_msg("Missing required elements", game));
-            game->temp_map_line = ft_strdup(line);  // Use strdup to avoid double free
-            free(line);      // Free original line
-            parsing_map = 1;
-            continue;
+            game->temp_map_line = ft_strdup(line);
+            free(line);
+            break;
         }
         if (!is_empty_line(line))
         {
@@ -46,29 +45,41 @@ static int parse_scene_elements(t_game *game)
         }
         free(line);
     }
+    if (!game->temp_map_line)
+        return (clean_exit_msg("No map found in file", game));
     return (0);
 }
 
-static int validate_map(t_game *game)
+static void validate_map(t_game *game)
 {
     fill_map_array(game);
     map_validation(game);
-    return (0);
 }
 
-int parse_file(char *file, t_game *game)
+void parse_file(char *file, t_game *game)
 {
+    printf("DEBUG: Starting parse_file\n");
     if (!check_file_extension(file))
         clean_exit_msg("Invalid file extension", game);
+        
     game->fd = open(file, O_RDONLY);
     if (game->fd < 0)
-        clean_exit_msg("Cannot open file", game);       
-    parse_scene_elements(game);
+        clean_exit_msg("Cannot open file", game);
+        
+    parse_scene_elements(game);  // Will exit on error
+    printf("DEBUG: After parse_scene_elements\n");
     close(game->fd);
+    
     game->fd = open(file, O_RDONLY);
-    parse_map_lines(game);
+    if (game->fd < 0)
+        clean_exit_msg("Cannot open file", game);
+    parse_map_lines(game);  // Will exit on error
+    printf("DEBUG: After parse_map_lines\n");
     close(game->fd);
+    
     game->fd = open(file, O_RDONLY);
-    validate_map(game);
-    return (0);
+    if (game->fd < 0)
+        clean_exit_msg("Cannot open file", game);
+    validate_map(game);  // Will exit on error
+    printf("DEBUG: After validate_map\n");
 }

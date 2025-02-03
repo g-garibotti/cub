@@ -91,13 +91,12 @@ typedef struct s_game
 /* Function Prototypes */
 
 // Core parsing functions
-int		parse_file(char *filename, t_game *game);
+void		parse_file(char *filename, t_game *game);
 int		parse_texture(char *line, t_map *map);
 int		parse_color(char *line, t_map *map);
 
 // Map parsing functions
 int		parse_map(char *filename, t_game *game);
-int		parse_map_line(char *line, t_map *map, int y);
 int		count_map_rows(char *filename);
 int		get_map_width(char *filename);
 
@@ -111,11 +110,11 @@ int		check_file_empty(char *filename);
 int		check_map_size(t_map *map);
 void	free_split(char **split);
 int	parse_element(char *line, t_map *map);
-int parse_map_lines(t_game *game);
+void parse_map_lines(t_game *game);
 int is_map_line(char *line);
 int skip_to_map_start(t_game *game);
-int fill_map_array(t_game *game);
-int	map_validation(t_game *game);
+void fill_map_array(t_game *game);
+void	map_validation(t_game *game);
 char	**create_map_copy(t_game *game);
 void	flood_fill(char **map, int x, int y, t_game *game);
 void	free_map_copy(char **map_copy, int height);

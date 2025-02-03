@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:47:01 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/03 12:29:37 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/03 13:46:34 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ int skip_to_map_start(t_game *game)
             i++;
         if (line[i] == '\0' || line[i] == '\n')
         {
+            free(line);  // Add this line
             map_start = 1;
             break;
         }

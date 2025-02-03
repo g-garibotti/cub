@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 13:15:08 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/01/30 15:00:38 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/03 13:39:54 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ int	main(int argc, char **argv)
 		clean_exit_msg("Usage: ./cub3D <map.cub>", NULL);
 	init_game(&game);
 	//PARSING
-	if (parse_file(argv[1], &game))
-		clean_exit_msg("Parsing error", &game);
+	parse_file(argv[1], &game);
 	printf("BEFORE CLEAN END\n");
 	// Continue with game initialization...
 	clean_game(&game);

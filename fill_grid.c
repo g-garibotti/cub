@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 15:56:45 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/03 12:39:45 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/03 13:34:33 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ static void debug_print_map(t_game *game)
     }
 }
 
-int fill_map_array(t_game *game)
+void fill_map_array(t_game *game)
 {
     if (skip_to_map_start(game) < 0)
         clean_exit_msg("Invalid map start", game);
@@ -103,5 +103,4 @@ int fill_map_array(t_game *game)
         clean_exit_msg("Failed to fill remaining lines of map", game);
     debug_print_map(game);
     close(game->fd);
-    return (0);
 }
