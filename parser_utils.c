@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:47:01 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/01/30 13:32:07 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/03 12:29:37 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,12 @@ char	*trim_whitespace(char *str)
 	return (result);
 }
 
-int skip_to_map_start(int fd)
+int skip_to_map_start(t_game *game)
 {
     char *line;
     int map_start = 0;
 
-    while ((line = get_next_line(fd)) != NULL)
+    while ((line = get_next_line(game->fd)) != NULL)
     {
         if (is_empty_line(line))
         {
@@ -103,6 +103,5 @@ int skip_to_map_start(int fd)
     }
     if (!map_start)
         return (-1);
-
     return (0);
 }

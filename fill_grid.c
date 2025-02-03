@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 15:56:45 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/03 09:39:39 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/03 12:39:45 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,18 +59,17 @@ static int fill_first_line(t_game *game)
 {
     if (!game->temp_map_line)
         return (1);
-    
     fill_line(game->map.grid[0], game->temp_map_line, game->map.width);
     return (0);
 }
 
-static int fill_remaining_lines(int fd, t_game *game)
+static int fill_remaining_lines(t_game *game)
 {
     char *line;
     int i;
     
     i = 1;  // Start from second line
-    while ((line = get_next_line(fd)) && i < game->map.height)
+    while ((line = get_next_line(game->fd)) && i < game->map.height)
     {
         fill_line(game->map.grid[i], line, game->map.width);
         free(line);
@@ -92,33 +91,17 @@ static void debug_print_map(t_game *game)
     }
 }
 
-int fill_map_array(int fd, t_game *game)
+int fill_map_array(t_game *game)
 {
-    if (skip_to_map_start(fd) < 0)
-    {
-        close(fd);
-        return (1);
-    }
-    
+    if (skip_to_map_start(game) < 0)
+        clean_exit_msg("Invalid map start", game);
     if (allocate_map_grid(game) != 0)
-    {
-        close(fd);
-        return (1);
-    }
-        
+        clean_exit_msg("Failed to allocate memory for map grid", game);
     if (fill_first_line(game) != 0)
-    {
-        close(fd);
-        return (1);
-    }
-        
-    if (fill_remaining_lines(fd, game) != 0)
-    {
-        close(fd);
-        return (1);
-    }
-    
+        clean_exit_msg("Failed to fill first line of map", game); 
+    if (fill_remaining_lines(game) != 0)
+        clean_exit_msg("Failed to fill remaining lines of map", game);
     debug_print_map(game);
-    close(fd);
+    close(game->fd);
     return (0);
 }

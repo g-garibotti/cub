@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 14:03:24 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/01/29 15:12:26 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/03 12:19:17 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,9 @@ int parse_texture(char *line, t_map *map)
     int     result;
 
     split = ft_split(line, ' ');
-    if (!split || !split[1] || split[2])
+    if (!split)
+        return (0);
+    if (!split[1] || split[2])
     {
         ft_free_split(split);
         return (0);
@@ -73,12 +75,12 @@ int parse_texture(char *line, t_map *map)
     if (check_duplicate_texture(split[0], map))
     {
         ft_free_split(split);
-        return (clean_exit_msg("Duplicate texture identifier", NULL));
+        return (0);
     }
     if (!check_texture_file(split[1]))
     {
         ft_free_split(split);
-        return (clean_exit_msg("Invalid texture file path", NULL));
+        return (0);
     }
     result = set_texture_path(split[0], split[1], map);
     ft_free_split(split);

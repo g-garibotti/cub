@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:14:27 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/01/29 11:57:39 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/03 12:14:45 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,15 @@ static void	clean_window(t_game *game)
 	}
 }
 
-void    clean_game(t_game *game)
+void clean_game(t_game *game)
 {
     if (!game)
         return ;
+    if (game->fd != -1)
+    {
+        close(game->fd);
+        game->fd = -1;
+    }
     if (game->rays)
     {
         free(game->rays);
@@ -106,14 +111,17 @@ void    clean_game(t_game *game)
     game->endian = 0;
 }
 
-int	clean_exit_msg(char *msg, t_game *game)
+int clean_exit_msg(char *msg, t_game *game)
 {
-	if (msg)
-	{
-		ft_putstr_fd(msg, 2);
-		ft_putstr_fd("\n", 2);
-	}
-	if (game)
-		clean_game(game);
-	exit(1);
+    if (msg)
+    {
+        ft_putstr_fd(msg, 2);
+        ft_putstr_fd("\n", 2);
+    }
+    if (game)
+    {
+        clean_game(game);
+    }
+    exit(1);
+    return (1); // Never reached, but keeps compiler happy
 }

@@ -85,6 +85,7 @@ typedef struct s_game
     t_map map;       // map data
     t_ray *rays;     // array of rays
     char *temp_map_line; // temporary storage for map parsing
+	int fd;
 }       t_game;
 
 /* Function Prototypes */
@@ -110,10 +111,10 @@ int		check_file_empty(char *filename);
 int		check_map_size(t_map *map);
 void	free_split(char **split);
 int	parse_element(char *line, t_map *map);
-int parse_map_lines(int fd, t_game *game);
+int parse_map_lines(t_game *game);
 int is_map_line(char *line);
-int skip_to_map_start(int fd);
-int fill_map_array(int fd, t_game *game);
+int skip_to_map_start(t_game *game);
+int fill_map_array(t_game *game);
 int	map_validation(t_game *game);
 char	**create_map_copy(t_game *game);
 void	flood_fill(char **map, int x, int y, t_game *game);

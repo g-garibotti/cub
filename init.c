@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 12:15:31 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/03 10:46:12 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/03 12:14:27 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void init_game(t_game *game)
     game->addr = NULL;
     game->rays = NULL;
     game->temp_map_line = NULL;
+    game->fd = -1;
     
     // Initialize map structure
     init_map(&game->map);

@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 09:44:44 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/03 11:18:26 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/03 12:12:51 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,38 +117,29 @@ static int check_empty_spaces(t_game *game)
     return (1);
 }
 
-int	map_validation(t_game *game)
+int map_validation(t_game *game)
 {
-    char	**map_copy;
+    char **map_copy;
 
-    // Check for valid characters
+    // Check for valid characters first (no allocation yet)
     if (!check_map_chars(game))
         return (clean_exit_msg("Invalid character in map", game));
 
-    // Check player position and count
+    // Check player position and count (no allocation yet)
     if (!find_player(game))
         return (clean_exit_msg("Invalid player position or count", game));
-
-    // Check empty spaces
     if (!check_empty_spaces(game))
         return (clean_exit_msg("Map has exposed empty spaces", game));
-
-    // Create map copy for flood fill
     map_copy = create_map_copy(game);
     if (!map_copy)
         return (clean_exit_msg("Memory allocation failed", game));
-
-    // Initialize map as closed and perform flood fill
     game->map.is_closed = 1;
     flood_fill(map_copy, game->player.pos_x, game->player.pos_y, game);
-
-    // Check if flood fill found any open edges
     if (!game->map.is_closed)
     {
-        free_map_copy(map_copy, game->map.height);
+        free_map_copy(map_copy, game->map.height);  // Free map_copy before returning
         return (clean_exit_msg("Map is not properly closed", game));
     }
-
     free_map_copy(map_copy, game->map.height);
     return (0);
 }
