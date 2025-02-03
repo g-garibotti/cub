@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 15:56:45 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/01/30 15:57:36 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/03 09:39:39 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ static int allocate_map_grid(t_game *game)
     
     game->map.grid = malloc(sizeof(char *) * game->map.height);
     if (!game->map.grid)
-        return (clean_exit_msg("Memory allocation failed", game));
+        return (1);
     
     i = 0;
     while (i < game->map.height)
     {
         game->map.grid[i] = malloc(sizeof(char) * (game->map.width + 1));
         if (!game->map.grid[i])
-            return (clean_exit_msg("Memory allocation failed", game));
+            return (1);
             
         j = 0;
         while (j < game->map.width)
@@ -47,7 +47,9 @@ static void fill_line(char *grid_line, char *source_line, int width)
     j = 0;
     while (source_line[j] && source_line[j] != '\n' && j < width)
     {
-        if (source_line[j] != ' ')
+        if (source_line[j] == ' ')
+            grid_line[j] = 'X';
+        else
             grid_line[j] = source_line[j];
         j++;
     }
@@ -56,7 +58,7 @@ static void fill_line(char *grid_line, char *source_line, int width)
 static int fill_first_line(t_game *game)
 {
     if (!game->temp_map_line)
-        return (clean_exit_msg("No first line stored", game));
+        return (1);
     
     fill_line(game->map.grid[0], game->temp_map_line, game->map.width);
     return (0);
@@ -93,17 +95,30 @@ static void debug_print_map(t_game *game)
 int fill_map_array(int fd, t_game *game)
 {
     if (skip_to_map_start(fd) < 0)
-        return (clean_exit_msg("Error finding map start", game));
+    {
+        close(fd);
+        return (1);
+    }
     
     if (allocate_map_grid(game) != 0)
+    {
+        close(fd);
         return (1);
+    }
         
     if (fill_first_line(game) != 0)
+    {
+        close(fd);
         return (1);
+    }
         
     if (fill_remaining_lines(fd, game) != 0)
+    {
+        close(fd);
         return (1);
+    }
     
     debug_print_map(game);
+    close(fd);
     return (0);
 }

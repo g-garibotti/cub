@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 12:15:31 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/01/30 12:15:45 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/03 10:46:12 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static void init_map(t_map *map)
     map->grid = NULL;
     map->width = 0;
     map->height = 0;
+    map->is_closed = 0;
     
     // Initialize texture structures
     map->north.img = NULL;

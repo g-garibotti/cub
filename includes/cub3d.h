@@ -69,6 +69,7 @@ typedef struct s_map
 	t_texture east;  // east wall texture
 	int floor_color; // floor color (RGB)
 	int ceil_color;  // ceiling color (RGB)
+	int is_closed;   // flag to check if map is closed
 }		t_map;
 
 typedef struct s_game
@@ -113,6 +114,11 @@ int parse_map_lines(int fd, t_game *game);
 int is_map_line(char *line);
 int skip_to_map_start(int fd);
 int fill_map_array(int fd, t_game *game);
+int	map_validation(t_game *game);
+char	**create_map_copy(t_game *game);
+void	flood_fill(char **map, int x, int y, t_game *game);
+void	free_map_copy(char **map_copy, int height);
+void init_player_direction(t_player *player);
 //int is_map_line(char *line);
 
 // Ray casting functions

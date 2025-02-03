@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:28:04 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/01/30 16:03:58 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/03 10:46:49 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,10 @@ static int parse_scene_elements(int fd, t_game *game)
 
 static int validate_map(int fd, t_game *game)
 {
-    fill_map_array(fd, game);
+    if (fill_map_array(fd, game) != 0)
+        return (1);
+    if (map_validation(game) != 0)
+        return (1);
     return (0);
 }
 
@@ -78,19 +81,21 @@ int parse_file(char *file, t_game *game)
         clean_exit_msg("Invalid file extension", game);
     fd = open(file, O_RDONLY);
     if (fd < 0)
-        clean_exit_msg("Cannot open file", game);
-    // Parse scene elements (textures and colors)
+        clean_exit_msg("Cannot open file", game);       
     parse_scene_elements(fd, game);
     close(fd);
     fd = open(file, O_RDONLY);
-    parse_map_lines(fd, game);
+    if (parse_map_lines(fd, game) != 0)
+    {
+        close(fd);
+        clean_exit_msg("Error parsing map lines", game);
+    }
     close(fd);
     fd = open(file, O_RDONLY);
-    validate_map(fd, game);
-    
-    // Success cleanup
-    free(game->temp_map_line);
-    game->temp_map_line = NULL;
-    close(fd);
+    if (validate_map(fd, game) != 0)
+    {
+        close(fd);
+        clean_exit_msg("Invalid map", game);
+    }
     return (0);
 }
