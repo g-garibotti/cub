@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:14:27 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/03 14:07:16 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/04 13:16:56 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ int	clean_exit_msg(char *msg, t_game *game)
 {
 	if (msg)
 	{
+		ft_putstr_fd("Error\n", 2);
 		ft_putstr_fd(msg, 2);
 		ft_putstr_fd("\n", 2);
 	}
