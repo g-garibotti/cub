@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 14:12:30 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/04 13:31:53 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/04 13:35:06 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ void	update_player_pos(t_game *game, int x, int y)
 
 int	find_player(t_game *game)
 {
-	int x;
-	int y;
-	int player_count;
+	int	player_count;
+	int	x;
+	int	y;
 
 	player_count = 0;
 	y = 0;
