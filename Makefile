@@ -13,10 +13,17 @@ MLXFLAGS = -lmlx -lXext -lX11 -lm
 # Source files
 SRCS = $(wildcard *.c)
 PARSING_SRCS = $(wildcard parsing/*.c)
-ALL_SRCS = $(SRCS) $(PARSING_SRCS)
+GAME_SRCS = $(wildcard game/*.c)
+RENDER_SRCS = $(wildcard render/*.c)
+MATH_SRCS = $(wildcard math/*.c)
+ALL_SRCS = $(SRCS) $(PARSING_SRCS) $(GAME_SRCS) $(RENDER_SRCS) $(MATH_SRCS)
 
 OBJS_DIR = objs
-OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o) $(PARSING_SRCS:parsing/%.c=$(OBJS_DIR)/parsing/%.o)
+OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o) \
+       $(PARSING_SRCS:parsing/%.c=$(OBJS_DIR)/parsing/%.o) \
+       $(GAME_SRCS:game/%.c=$(OBJS_DIR)/game/%.o) \
+       $(RENDER_SRCS:render/%.c=$(OBJS_DIR)/render/%.o) \
+       $(MATH_SRCS:math/%.c=$(OBJS_DIR)/math/%.o)
 
 DEPS = $(OBJS:.o=.d)
 
@@ -38,6 +45,24 @@ $(OBJS_DIR)/%.o: %.c
 		(echo "$(RED)Compilation of $< failed!$(RESET)" && exit 1)
 
 $(OBJS_DIR)/parsing/%.o: parsing/%.c
+	@mkdir -p $(@D)
+	@echo "$(YELLOW)Compiling $<...$(RESET)"
+	@$(CC) $(CFLAGS) -MMD -MP -I./includes -Ilibft -Iminilibx-linux -c $< -o $@ || \
+		(echo "$(RED)Compilation of $< failed!$(RESET)" && exit 1)
+
+$(OBJS_DIR)/game/%.o: game/%.c
+	@mkdir -p $(@D)
+	@echo "$(YELLOW)Compiling $<...$(RESET)"
+	@$(CC) $(CFLAGS) -MMD -MP -I./includes -Ilibft -Iminilibx-linux -c $< -o $@ || \
+		(echo "$(RED)Compilation of $< failed!$(RESET)" && exit 1)
+
+$(OBJS_DIR)/render/%.o: render/%.c
+	@mkdir -p $(@D)
+	@echo "$(YELLOW)Compiling $<...$(RESET)"
+	@$(CC) $(CFLAGS) -MMD -MP -I./includes -Ilibft -Iminilibx-linux -c $< -o $@ || \
+		(echo "$(RED)Compilation of $< failed!$(RESET)" && exit 1)
+
+$(OBJS_DIR)/math/%.o: math/%.c
 	@mkdir -p $(@D)
 	@echo "$(YELLOW)Compiling $<...$(RESET)"
 	@$(CC) $(CFLAGS) -MMD -MP -I./includes -Ilibft -Iminilibx-linux -c $< -o $@ || \
