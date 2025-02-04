@@ -121,6 +121,7 @@ void	free_map_copy(char **map_copy, int height);
 void	init_player_direction(t_player *player);
 int		check_player_position(t_game *game, int x, int y);
 void	update_player_pos(t_game *game, int x, int y);
+int		find_player(t_game *game);
 
 // Ray casting functions
 void	cast_rays(t_game *game);

@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 14:12:30 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/03 14:16:46 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/04 13:31:53 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,31 @@ void	update_player_pos(t_game *game, int x, int y)
 	game->player.pos_y = y;
 	game->player.orientation = game->map.grid[y][x];
 	init_player_direction(&game->player);
+}
+
+int	find_player(t_game *game)
+{
+	int x;
+	int y;
+	int player_count;
+
+	player_count = 0;
+	y = 0;
+	while (y < game->map.height)
+	{
+		x = 0;
+		while (x < game->map.width)
+		{
+			if (ft_strchr("NSEW", game->map.grid[y][x]))
+			{
+				if (!check_player_position(game, x, y))
+					return (0);
+				update_player_pos(game, x, y);
+				player_count++;
+			}
+			x++;
+		}
+		y++;
+	}
+	return (player_count == 1);
 }

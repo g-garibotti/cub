@@ -6,38 +6,11 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 09:44:44 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/03 14:17:00 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/04 13:32:01 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-
-static int	find_player(t_game *game)
-{
-	int	x;
-	int	y;
-	int	player_count;
-
-	player_count = 0;
-	y = 0;
-	while (y < game->map.height)
-	{
-		x = 0;
-		while (x < game->map.width)
-		{
-			if (ft_strchr("NSEW", game->map.grid[y][x]))
-			{
-				if (!check_player_position(game, x, y))
-					return (0);
-				update_player_pos(game, x, y);
-				player_count++;
-			}
-			x++;
-		}
-		y++;
-	}
-	return (player_count == 1);
-}
 
 static int	is_valid_char(char c)
 {
@@ -65,6 +38,20 @@ static int	check_map_chars(t_game *game)
 	return (1);
 }
 
+static int	check_surrounding(t_game *game, int x, int y)
+{
+	if (x == 0 || x == game->map.width - 1 || y == 0 || y == game->map.height
+		- 1)
+		return (0);
+	if (game->map.grid[y][x + 1] == 'X' || game->map.grid[y][x - 1] == 'X'
+		|| game->map.grid[y + 1][x] == 'X' || game->map.grid[y - 1][x] == 'X'
+		|| game->map.grid[y - 1][x - 1] == 'X' || game->map.grid[y - 1][x
+		+ 1] == 'X' || game->map.grid[y + 1][x - 1] == 'X' || game->map.grid[y
+		+ 1][x + 1] == 'X')
+		return (0);
+	return (1);
+}
+
 static int	check_empty_spaces(t_game *game)
 {
 	int	x;
@@ -76,16 +63,8 @@ static int	check_empty_spaces(t_game *game)
 		x = 0;
 		while (x < game->map.width)
 		{
-			if (game->map.grid[y][x] == '0')
-			{
-				if (x == 0 || x == game->map.width - 1 || y == 0
-					|| y == game->map.height - 1)
-					return (0);
-				if (game->map.grid[y][x + 1] == 'X' || game->map.grid[y][x
-					- 1] == 'X' || game->map.grid[y + 1][x] == 'X'
-					|| game->map.grid[y - 1][x] == 'X')
-					return (0);
-			}
+			if (game->map.grid[y][x] == '0' && !check_surrounding(game, x, y))
+				return (0);
 			x++;
 		}
 		y++;
