@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 14:06:08 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/04 14:06:22 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/04 16:19:11 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void	normalize_vector(double *x, double *y)
 	length = get_vector_length(*x, *y);
 	if (length != 0)
 	{
-		*x /= length;
-		*y /= length;
+		*x = *x / length;
+		*y = *y / length;
 	}
 }
 

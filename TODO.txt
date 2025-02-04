@@ -1,0 +1,17 @@
+Great! Now we have a working base with:
+
+1. Map parsing ✓
+2. Player movement and collision ✓
+3. Basic raycasting ✓
+4. Textured walls ✓
+
+Would you like to add some optimizations or bonus features? Here are some possibilities:
+
+1. Minimap (showing player position and walls)
+2. Mouse rotation (for smoother camera control)
+3. Wall collision improvements (adding a small buffer to make movement smoother)
+4. Sprint feature (increased movement speed while holding a key)
+5. Texture animations
+6. Doors that can be opened/closed
+
+Which one would you like to implement first? Or is there something else you'd like to improve in the existing code?

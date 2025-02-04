@@ -17,7 +17,7 @@
 # define TILE_SIZE 30         // tile size
 # define FOV 60               // field of view
 # define ROTATION_SPEED 0.045 // rotation speed
-# define PLAYER_SPEED 4       // player speed
+# define PLAYER_SPEED 2       // player speed
 # define PI 3.14159265359
 # define RAD (PI / 180)
 
