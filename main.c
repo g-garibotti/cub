@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 13:15:08 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/03 14:08:20 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/04 14:14:51 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	main(int argc, char **argv)
 	init_game(&game);
 	parse_file(argv[1], &game);
 	printf("BEFORE CLEAN END\n");
-	// Continue with game initialization...
-	clean_game(&game);
+	if (start_game(&game) != 0)
+		return (1);
 	return (0);
 }

@@ -3,6 +3,8 @@
 
 # include "../libft/libft.h"
 # include "../minilibx-linux/mlx.h"
+# include <X11/X.h>
+# include <X11/keysym.h>
 # include <fcntl.h>
 # include <math.h>
 # include <stdio.h>
@@ -20,31 +22,47 @@
 # define RAD (PI / 180)
 
 /* Structures */
+
+typedef struct s_dda
+{
+	double	ray_dir_x;
+	double	ray_dir_y;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	double	side_dist_x;
+	double	side_dist_y;
+	int		step_x;
+	int		step_y;
+	int		map_x;
+	int		map_y;
+	int		hit;
+	int		side;
+}			t_dda;
+
 typedef struct s_player
 {
-	double pos_x;     // player x position (using double for smooth movement)
-	double pos_y;     // player y position (using double for smooth movement)
+	double pos_x;     // player x position
+	double pos_y;     // player y position
 	double dir_x;     // direction vector x
 	double dir_y;     // direction vector y
 	double angle;     // player angle
-	double plane_x;   // camera plane x (for raycasting)
-	double plane_y;   // camera plane y (for raycasting)
+	double plane_x;   // camera plane x
+	double plane_y;   // camera plane y
 	char orientation; // initial orientation (N,S,E,W)
 	float fov_rd;     // field of view in radians
 	int rot;          // rotation flag
 	int l_r;          // left/right movement flag
 	int u_d;          // up/down movement flag
-}		t_player;
+}			t_player;
 
 typedef struct s_ray
 {
 	double ray_ngl;  // ray angle
 	double distance; // distance to wall
-	int flag;        // wall flag
 	double wall_x;   // wall hit position for texturing
 	int wall_height; // height of wall to render
 	int side;        // which side of wall was hit (N,S,E,W)
-}		t_ray;
+}			t_ray;
 
 typedef struct s_texture
 {
@@ -56,7 +74,7 @@ typedef struct s_texture
 	int bpp;      // bits per pixel
 	int line_len; // line length
 	int endian;   // endianness
-}		t_texture;
+}			t_texture;
 
 typedef struct s_map
 {
@@ -70,7 +88,7 @@ typedef struct s_map
 	int floor_color; // floor color (RGB)
 	int ceil_color;  // ceiling color (RGB)
 	int is_closed;   // flag to check if map is closed
-}		t_map;
+}			t_map;
 
 typedef struct s_game
 {
@@ -85,68 +103,64 @@ typedef struct s_game
 	t_map map;           // map data
 	t_ray *rays;         // array of rays
 	char *temp_map_line; // temporary storage for map parsing
-	int	fd;
-}		t_game;
+	int fd;              // file descriptor
+}			t_game;
 
 /* Function Prototypes */
 
-// Core parsing functions
-void	parse_file(char *filename, t_game *game);
-int		parse_texture(char *line, t_map *map);
-int		parse_color(char *line, t_map *map);
+// Core game functions
+int			start_game(t_game *game);
+void		set_hooks(t_game *game);
+void		init_game(t_game *game);
 
-// Map parsing functions
-int		parse_map(char *filename, t_game *game);
-int		count_map_rows(char *filename);
-int		get_map_width(char *filename);
+// Parsing functions
+void		parse_file(char *filename, t_game *game);
+int			parse_texture(char *line, t_map *map);
+int			parse_color(char *line, t_map *map);
+int			parse_element(char *line, t_map *map);
+void		parse_map_lines(t_game *game);
 
-// Parser utility functions
-int		is_empty_line(char *line);
-char	*trim_whitespace(char *str);
-int		check_file_extension(char *filename);
-int		is_valid_number(char *str);
-int		validate_textures(t_map *map);
-int		check_file_empty(char *filename);
-int		check_map_size(t_map *map);
-void	free_split(char **split);
-int		parse_element(char *line, t_map *map);
-void	parse_map_lines(t_game *game);
-int		is_map_line(char *line);
-int		skip_to_map_start(t_game *game);
-void	fill_map_array(t_game *game);
-void	map_validation(t_game *game);
-char	**create_map_copy(t_game *game);
-void	flood_fill(char **map, int x, int y, t_game *game);
-void	free_map_copy(char **map_copy, int height);
-void	init_player_direction(t_player *player);
-int		check_player_position(t_game *game, int x, int y);
-void	update_player_pos(t_game *game, int x, int y);
-int		find_player(t_game *game);
+// Parser utilities
+int			is_empty_line(char *line);
+int			is_map_line(char *line);
+char		*trim_whitespace(char *str);
+int			check_file_extension(char *filename);
+int			skip_to_map_start(t_game *game);
+void		fill_map_array(t_game *game);
 
-// Ray casting functions
-void	cast_rays(t_game *game);
-void	calculate_wall_height(t_game *game, t_ray *ray);
-void	render_walls(t_game *game);
+// Map validation
+void		map_validation(t_game *game);
+char		**create_map_copy(t_game *game);
+void		flood_fill(char **map, int x, int y, t_game *game);
+void		free_map_copy(char **map_copy, int height);
+int			check_player_position(t_game *game, int x, int y);
 
-// Player movement functions
-void	move_player(t_game *game);
-void	rotate_player(t_game *game);
-int		check_collision(t_game *game, double new_x, double new_y);
+// Player functions
+void		init_player_direction(t_player *player);
+void		update_player_pos(t_game *game, int x, int y);
+int			find_player(t_game *game);
+void		move_player(t_game *game);
+void		rotate_player(t_game *game);
+int			check_collision(t_game *game, double new_x, double new_y);
 
-// Texture handling
-int		load_textures(t_game *game);
-void	apply_texture(t_game *game, int x, t_ray *ray);
+// Math functions
+double		get_vector_length(double x, double y);
+void		normalize_vector(double *x, double *y);
+double		get_vector_angle(double x, double y);
+void		get_perpendicular(double *x, double *y);
+void		cast_single_ray(t_game *game, t_ray *ray, int x);
 
-// Utils and error handling
-void	free_game(t_game *game);
-void	error_exit(char *message, t_game *game);
-void	init_game(t_game *game);
+// Rendering functions
+void		cast_rays(t_game *game);
+void		render_walls(t_game *game);
+void		draw_vertical_line(t_game *game, int x, int start, int end);
 
-// Hook functions
-void	set_hooks(t_game *game);
+// Texture functions
+int			load_textures(t_game *game);
+void		apply_texture(t_game *game, int x, t_ray *ray);
 
 // Cleanup functions
-void	clean_game(t_game *game);
-int		clean_exit_msg(char *msg, t_game *game);
+void		clean_game(t_game *game);
+int			clean_exit_msg(char *msg, t_game *game);
 
 #endif
