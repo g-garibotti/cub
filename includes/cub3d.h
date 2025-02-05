@@ -27,6 +27,7 @@
 # define KEY_D 100
 # define KEY_LEFT 65361
 # define KEY_RIGHT 65363
+# define KEY_SHIFT 65505 
 
 /* Minimap */
 # define MINIMAP_SIZE 200     // size of minimap
@@ -72,6 +73,7 @@ typedef struct s_player
 	int rot;          // rotation flag
 	int l_r;          // left/right movement flag
 	int u_d;          // up/down movement flag
+	int sprint;       // sprint flag
 }			t_player;
 
 typedef struct s_ray

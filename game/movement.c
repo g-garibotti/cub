@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 14:03:59 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/04 14:04:09 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/05 17:12:28 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,37 +32,40 @@ int	check_collision(t_game *game, double new_x, double new_y)
 
 void	move_player(t_game *game)
 {
-	double	new_x;
-	double	new_y;
-	double	move_speed;
+    double	new_x;
+    double	new_y;
+    double	move_speed;
 
-	move_speed = PLAYER_SPEED * 0.05;
-	if (game->player.u_d != 0)
-	{
-		// Forward/Backward movement
-		new_x = game->player.pos_x + game->player.dir_x * move_speed
-			* game->player.u_d;
-		new_y = game->player.pos_y + game->player.dir_y * move_speed
-			* game->player.u_d;
-		if (!check_collision(game, new_x, new_y))
-		{
-			game->player.pos_x = new_x;
-			game->player.pos_y = new_y;
-		}
-	}
-	if (game->player.l_r != 0)
-	{
-		// Strafe Left/Right movement
-		new_x = game->player.pos_x + game->player.plane_x * move_speed
-			* game->player.l_r;
-		new_y = game->player.pos_y + game->player.plane_y * move_speed
-			* game->player.l_r;
-		if (!check_collision(game, new_x, new_y))
-		{
-			game->player.pos_x = new_x;
-			game->player.pos_y = new_y;
-		}
-	}
+    move_speed = PLAYER_SPEED * 0.05;
+    if (game->player.sprint)
+        move_speed *= 2.0; // Double movement speed when sprinting
+
+    if (game->player.u_d != 0)
+    {
+        // Forward/Backward movement
+        new_x = game->player.pos_x + game->player.dir_x * move_speed
+            * game->player.u_d;
+        new_y = game->player.pos_y + game->player.dir_y * move_speed
+            * game->player.u_d;
+        if (!check_collision(game, new_x, new_y))
+        {
+            game->player.pos_x = new_x;
+            game->player.pos_y = new_y;
+        }
+    }
+    if (game->player.l_r != 0)
+    {
+        // Strafe Left/Right movement
+        new_x = game->player.pos_x + game->player.plane_x * move_speed
+            * game->player.l_r;
+        new_y = game->player.pos_y + game->player.plane_y * move_speed
+            * game->player.l_r;
+        if (!check_collision(game, new_x, new_y))
+        {
+            game->player.pos_x = new_x;
+            game->player.pos_y = new_y;
+        }
+    }
 }
 
 void	rotate_player(t_game *game)

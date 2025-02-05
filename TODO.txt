@@ -4,13 +4,10 @@ Great! Now we have a working base with:
 2. Player movement and collision ✓
 3. Basic raycasting ✓
 4. Textured walls ✓
+5. Minimap (showing player position and walls) ✓
+6. Mouse rotation (for smoother camera control) ✓
+7. Sprint feature (increased movement speed while holding a key) ✓
 
-Would you like to add some optimizations or bonus features? Here are some possibilities:
-
-1. Minimap (showing player position and walls)
-2. Mouse rotation (for smoother camera control)
-3. Wall collision improvements (adding a small buffer to make movement smoother)
-4. Sprint feature (increased movement speed while holding a key)
 5. Texture animations
 6. Doors that can be opened/closed
 

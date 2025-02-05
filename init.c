@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 12:15:31 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/03 14:08:11 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/05 17:12:07 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,19 @@ static void	init_map(t_map *map)
 
 static void	init_player(t_player *player)
 {
-	player->pos_x = 0;
-	player->pos_y = 0;
-	player->dir_x = 0;
-	player->dir_y = 0;
-	player->angle = 0;
-	player->plane_x = 0;
-	player->plane_y = 0;
-	player->orientation = 0;
-	player->fov_rd = 0;
-	player->rot = 0;
-	player->l_r = 0;
-	player->u_d = 0;
+    player->pos_x = 0;
+    player->pos_y = 0;
+    player->dir_x = 0;
+    player->dir_y = 0;
+    player->angle = 0;
+    player->plane_x = 0;
+    player->plane_y = 0;
+    player->orientation = 0;
+    player->fov_rd = 0;
+    player->rot = 0;
+    player->l_r = 0;
+    player->u_d = 0;
+    player->sprint = 0;
 }
 
 void	init_game(t_game *game)
