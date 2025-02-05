@@ -6,46 +6,46 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 13:52:16 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/04 14:00:47 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/05 16:18:47 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-static int	key_press(int keycode, t_game *game)
+static int key_press(int keycode, t_game *game)
 {
-	if (keycode == XK_Escape)
-		return (clean_exit_msg(NULL, game));
-	else if (keycode == XK_w || keycode == XK_W)
-		game->player.u_d = 1;
-	else if (keycode == XK_s || keycode == XK_S)
-		game->player.u_d = -1;
-	else if (keycode == XK_a || keycode == XK_A)
-		game->player.l_r = -1;
-	else if (keycode == XK_d || keycode == XK_D)
-		game->player.l_r = 1;
-	else if (keycode == XK_Left)
-		game->player.rot = -1;
-	else if (keycode == XK_Right)
-		game->player.rot = 1;
-	return (0);
+    if (keycode == KEY_ESC)
+        return (clean_exit_msg(NULL, game));
+    else if (keycode == KEY_W)
+        game->player.u_d = 1;
+    else if (keycode == KEY_S)
+        game->player.u_d = -1;
+    else if (keycode == KEY_A)
+        game->player.l_r = -1;
+    else if (keycode == KEY_D)
+        game->player.l_r = 1;
+    else if (keycode == KEY_LEFT)
+        game->player.rot = -1;
+    else if (keycode == KEY_RIGHT)
+        game->player.rot = 1;
+    return (0);
 }
 
-static int	key_release(int keycode, t_game *game)
+static int key_release(int keycode, t_game *game)
 {
-	if (keycode == XK_w || keycode == XK_W)
-		game->player.u_d = 0;
-	else if (keycode == XK_s || keycode == XK_S)
-		game->player.u_d = 0;
-	else if (keycode == XK_a || keycode == XK_A)
-		game->player.l_r = 0;
-	else if (keycode == XK_d || keycode == XK_D)
-		game->player.l_r = 0;
-	else if (keycode == XK_Left)
-		game->player.rot = 0;
-	else if (keycode == XK_Right)
-		game->player.rot = 0;
-	return (0);
+    if (keycode == KEY_W)
+        game->player.u_d = 0;
+    else if (keycode == KEY_S)
+        game->player.u_d = 0;
+    else if (keycode == KEY_A)
+        game->player.l_r = 0;
+    else if (keycode == KEY_D)
+        game->player.l_r = 0;
+    else if (keycode == KEY_LEFT)
+        game->player.rot = 0;
+    else if (keycode == KEY_RIGHT)
+        game->player.rot = 0;
+    return (0);
 }
 
 static int	game_loop(t_game *game)
@@ -58,6 +58,7 @@ static int	game_loop(t_game *game)
 	// Cast rays and render the scene
 	cast_rays(game);
 	render_walls(game);
+	render_minimap(game);
 	// Put the image to window
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 	return (0);
@@ -68,10 +69,10 @@ static int	close_window(t_game *game)
 	return (clean_exit_msg(NULL, game));
 }
 
-void	set_hooks(t_game *game)
+void set_hooks(t_game *game)
 {
-	mlx_hook(game->win, KeyPress, KeyPressMask, key_press, game);
-	mlx_hook(game->win, KeyRelease, KeyReleaseMask, key_release, game);
-	mlx_hook(game->win, DestroyNotify, StructureNotifyMask, close_window, game);
-	mlx_loop_hook(game->mlx, game_loop, game);
+    mlx_hook(game->win, 2, 1L<<0, key_press, game);
+    mlx_hook(game->win, 3, 1L<<1, key_release, game);
+    mlx_hook(game->win, 17, 0, close_window, game);
+    mlx_loop_hook(game->mlx, game_loop, game);
 }

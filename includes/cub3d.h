@@ -3,8 +3,6 @@
 
 # include "../libft/libft.h"
 # include "../minilibx-linux/mlx.h"
-# include <X11/X.h>
-# include <X11/keysym.h>
 # include <fcntl.h>
 # include <math.h>
 # include <stdio.h>
@@ -21,7 +19,28 @@
 # define PI 3.14159265359
 # define RAD (PI / 180)
 
+/* Additional Key Codes */
+# define KEY_ESC 65307
+# define KEY_W 119
+# define KEY_A 97
+# define KEY_S 115
+# define KEY_D 100
+# define KEY_LEFT 65361
+# define KEY_RIGHT 65363
+
+/* Minimap */
+# define MINIMAP_SIZE 200     // size of minimap
+# define MINIMAP_TILE 10      // size of tile in minimap
+# define MINIMAP_VIEW 20      // number of tiles visible in minimap
+# define MINIMAP_PADDING 20   // padding from screen edge
+
 /* Structures */
+
+typedef struct s_point
+{
+	int	x;
+	int	y;
+}			t_point;
 
 typedef struct s_dda
 {
@@ -107,6 +126,9 @@ typedef struct s_game
 }			t_game;
 
 /* Function Prototypes */
+
+// Minimap functions
+void	render_minimap(t_game *game);
 
 // Core game functions
 int			start_game(t_game *game);
