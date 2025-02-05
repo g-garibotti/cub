@@ -76,12 +76,14 @@ typedef struct s_player
 
 typedef struct s_ray
 {
-	double ray_ngl;  // ray angle
-	double distance; // distance to wall
-	double wall_x;   // wall hit position for texturing
-	int wall_height; // height of wall to render
-	int side;        // which side of wall was hit (N,S,E,W)
-}			t_ray;
+    double ray_ngl;   // ray angle
+    double distance;  // distance to wall
+    double wall_x;    // wall hit position for texturing
+    int wall_height;  // height of wall to render
+    int side;         // which side of wall was hit (0 for x, 1 for y)
+    int map_x;        // x coordinate of map cell hit
+    int map_y;        // y coordinate of map cell hit
+}           t_ray;
 
 typedef struct s_texture
 {
@@ -94,6 +96,17 @@ typedef struct s_texture
 	int line_len; // line length
 	int endian;   // endianness
 }			t_texture;
+
+typedef struct s_data
+{
+	int			draw_start;
+	int			draw_end;
+	int			tex_x;
+	int			x;
+	int			y;
+	t_texture	*tex;
+	t_ray		*ray;
+}				t_data;
 
 typedef struct s_map
 {

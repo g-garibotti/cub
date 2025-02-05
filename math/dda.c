@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 14:06:30 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/04 14:09:25 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/05 16:55:42 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,33 +77,39 @@ static void	perform_dda(t_dda *dda, t_game *game)
 	}
 }
 
-void	cast_single_ray(t_game *game, t_ray *ray, int x)
+void    cast_single_ray(t_game *game, t_ray *ray, int x)
 {
-	t_dda	dda;
-	double	camera_x;
-	double	perp_wall_dist;
+    t_dda   dda;
+    double  camera_x;
+    double  perp_wall_dist;
 
-	// Calculate camera x-coordinate in camera space
-	camera_x = 2 * x / (double)S_W - 1;
-	init_dda_values(&dda, game, camera_x);
-	calculate_step_and_side_dist(&dda, game);
-	perform_dda(&dda, game);
-	// Calculate distance to wall
-	if (dda.side == 0)
-		perp_wall_dist = (dda.map_x - game->player.pos_x + (1 - dda.step_x) / 2)
-			/ dda.ray_dir_x;
-	else
-		perp_wall_dist = (dda.map_y - game->player.pos_y + (1 - dda.step_y) / 2)
-			/ dda.ray_dir_y;
-	// Store ray information
-	ray->distance = perp_wall_dist;
-	ray->side = dda.side;
-	// Calculate wall X for texturing
-	if (dda.side == 0)
-		ray->wall_x = game->player.pos_y + perp_wall_dist * dda.ray_dir_y;
-	else
-		ray->wall_x = game->player.pos_x + perp_wall_dist * dda.ray_dir_x;
-	ray->wall_x -= floor(ray->wall_x);
-	// Calculate wall height
-	ray->wall_height = (int)(S_H / perp_wall_dist);
+    // Calculate camera x-coordinate in camera space
+    camera_x = 2 * x / (double)S_W - 1;
+    init_dda_values(&dda, game, camera_x);
+    calculate_step_and_side_dist(&dda, game);
+    perform_dda(&dda, game);
+    
+    // Calculate distance to wall
+    if (dda.side == 0)
+        perp_wall_dist = (dda.map_x - game->player.pos_x + (1 - dda.step_x) / 2)
+            / dda.ray_dir_x;
+    else
+        perp_wall_dist = (dda.map_y - game->player.pos_y + (1 - dda.step_y) / 2)
+            / dda.ray_dir_y;
+    
+    // Store ray information
+    ray->distance = perp_wall_dist;
+    ray->side = dda.side;
+    ray->map_x = dda.map_x;
+    ray->map_y = dda.map_y;
+    
+    // Calculate wall X for texturing
+    if (dda.side == 0)
+        ray->wall_x = game->player.pos_y + perp_wall_dist * dda.ray_dir_y;
+    else
+        ray->wall_x = game->player.pos_x + perp_wall_dist * dda.ray_dir_x;
+    ray->wall_x -= floor(ray->wall_x);
+    
+    // Calculate wall height
+    ray->wall_height = (int)(S_H / perp_wall_dist);
 }
