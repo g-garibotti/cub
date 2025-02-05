@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 14:13:30 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/05 17:01:27 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/05 17:35:59 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,13 @@
 
 static t_texture	*select_wall_texture(t_game *game, t_ray *ray)
 {
-	if (ray->side == 0)
+	int map_x = ray->map_x;
+    int map_y = ray->map_y;
+    
+    // First check if we hit a door
+    if (game->map.grid[map_y][map_x] == 'd' || game->map.grid[map_y][map_x] == 'D')
+        return (&game->map.door);
+	else if (ray->side == 0)
 	{
 		if (game->player.pos_x > ray->map_x)
 			return (&game->map.west);

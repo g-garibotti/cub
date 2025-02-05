@@ -28,6 +28,7 @@
 # define KEY_LEFT 65361
 # define KEY_RIGHT 65363
 # define KEY_SHIFT 65505 
+#define KEY_E 101
 
 /* Minimap */
 # define MINIMAP_SIZE 200     // size of minimap
@@ -122,6 +123,7 @@ typedef struct s_map
 	int floor_color; // floor color (RGB)
 	int ceil_color;  // ceiling color (RGB)
 	int is_closed;   // flag to check if map is closed
+	t_texture door;  // door texture
 }			t_map;
 
 typedef struct s_game

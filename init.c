@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 12:15:31 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/05 17:12:07 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/05 17:30:56 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@ static void	init_map(t_map *map)
 	map->west.addr = NULL;
 	map->floor_color = -1;
 	map->ceil_color = -1;
+	map->door.img = NULL;
+    map->door.path = NULL;
+    map->door.addr = NULL;
 }
 
 static void	init_player(t_player *player)

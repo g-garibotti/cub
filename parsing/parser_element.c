@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:44:27 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/03 14:16:30 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/05 17:42:20 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	parse_element(char *line, t_map *map)
 		return (0);
 	ret = 0;
 	if (trimmed[0] == 'N' || trimmed[0] == 'S' || trimmed[0] == 'W'
-		|| trimmed[0] == 'E')
+		|| trimmed[0] == 'E' || trimmed[0] == 'D')
 		ret = parse_texture(trimmed, map);
 	else if (trimmed[0] == 'F' || trimmed[0] == 'C')
 		ret = parse_color(trimmed, map);

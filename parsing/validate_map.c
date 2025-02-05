@@ -6,16 +6,16 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 09:44:44 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/04 13:32:01 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/05 17:29:22 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-static int	is_valid_char(char c)
+static int is_valid_char(char c)
 {
-	return (c == '0' || c == '1' || c == 'N' || c == 'S' || c == 'E' || c == 'W'
-		|| c == 'X');
+    return (c == '0' || c == '1' || c == 'N' || c == 'S' || c == 'E' || c == 'W' 
+        || c == 'X' || c == 'd' || c == 'D');
 }
 
 static int	check_map_chars(t_game *game)
