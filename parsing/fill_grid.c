@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 15:56:45 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/03 14:34:54 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/05 15:05:48 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,21 @@ static int	fill_remaining_lines(t_game *game)
 	return (0);
 }
 
+void	fill_map_array(t_game *game)
+{
+	if (skip_to_map_start(game) < 0)
+		clean_exit_msg("Invalid map start", game);
+	if (allocate_map_grid(game) != 0)
+		clean_exit_msg("Failed to allocate memory for map grid", game);
+	if (fill_first_line(game) != 0)
+		clean_exit_msg("Failed to fill first line of map", game);
+	if (fill_remaining_lines(game) != 0)
+		clean_exit_msg("Failed to fill remaining lines of map", game);
+	close(game->fd);
+}
+
+/*
+debug_print_map(game);
 static void	debug_print_map(t_game *game)
 {
 	int	i;
@@ -90,17 +105,4 @@ static void	debug_print_map(t_game *game)
 		i++;
 	}
 }
-
-void	fill_map_array(t_game *game)
-{
-	if (skip_to_map_start(game) < 0)
-		clean_exit_msg("Invalid map start", game);
-	if (allocate_map_grid(game) != 0)
-		clean_exit_msg("Failed to allocate memory for map grid", game);
-	if (fill_first_line(game) != 0)
-		clean_exit_msg("Failed to fill first line of map", game);
-	if (fill_remaining_lines(game) != 0)
-		clean_exit_msg("Failed to fill remaining lines of map", game);
-	debug_print_map(game);
-	close(game->fd);
-}
+*/
