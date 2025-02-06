@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 14:03:59 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/05 17:32:40 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/06 13:27:39 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,25 @@
 
 int check_collision(t_game *game, double new_x, double new_y)
 {
-    int map_x;
-    int map_y;
+    int map_x = (int)(new_x);
+    int map_y = (int)(new_y);
 
-    map_x = (int)(new_x);
-    map_y = (int)(new_y);
-    if (map_x < 0 || map_x >= game->map.width || map_y < 0 
-        || map_y >= game->map.height)
+    // Check map boundaries
+    if (map_x < 0 || map_x >= game->map.width || map_y < 0 || map_y >= game->map.height)
         return (1);
-    if (game->map.grid[map_y][map_x] == '1' 
-        || game->map.grid[map_y][map_x] == 'X'
-        || game->map.grid[map_y][map_x] == 'd')  // Closed door blocks movement
+
+    // Wall collision
+    if (game->map.grid[map_y][map_x] == '1')
         return (1);
+
+    // Door collision - 'd' is closed, 'D' is open
+    if (game->map.grid[map_y][map_x] == 'd')
+        return (1);
+
+    // Space outside map
+    if (game->map.grid[map_y][map_x] == 'X')
+        return (1);
+
     return (0);
 }
 

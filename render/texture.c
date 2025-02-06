@@ -6,34 +6,30 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 14:13:30 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/05 17:35:59 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/06 13:48:45 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-static t_texture	*select_wall_texture(t_game *game, t_ray *ray)
+static t_texture *select_wall_texture(t_game *game, t_ray *ray)
 {
-	int map_x = ray->map_x;
-    int map_y = ray->map_y;
-    
-    // First check if we hit a door
-    if (game->map.grid[map_y][map_x] == 'd' || game->map.grid[map_y][map_x] == 'D')
-        return (&game->map.door);
-	else if (ray->side == 0)
-	{
-		if (game->player.pos_x > ray->map_x)
-			return (&game->map.west);
-		else
-			return (&game->map.east);
-	}
-	else
-	{
-		if (game->player.pos_y > ray->map_y)
-			return (&game->map.north);
-		else
-			return (&game->map.south);
-	}
+    if (game->map.grid[ray->map_y][ray->map_x] == 'd')
+        return &game->map.door;
+    if (ray->side == 0)
+    {
+        if (game->player.pos_x > ray->map_x)
+            return (&game->map.west);
+        else
+            return (&game->map.east);
+    }
+    else
+    {
+        if (game->player.pos_y > ray->map_y)
+            return (&game->map.north);
+        else
+            return (&game->map.south);
+    }
 }
 
 static void	get_draw_bounds(t_ray *ray, int *start, int *end)
@@ -77,17 +73,17 @@ static void	draw_textured_line(t_game *game, t_data *data)
 	}
 }
 
-void	apply_texture(t_game *game, int x, t_ray *ray)
+void apply_texture(t_game *game, int x, t_ray *ray)
 {
-	t_texture	*tex;
-	t_data		data;
+    t_texture *tex;
+    t_data data;
 
-	tex = select_wall_texture(game, ray);
-	get_draw_bounds(ray, &data.draw_start, &data.draw_end);
-	data.tex_x = get_texture_x(game, ray, tex);
-	data.x = x;
-	data.y = data.draw_start;
-	data.tex = tex;
-	data.ray = ray;
-	draw_textured_line(game, &data);
+    tex = select_wall_texture(game, ray);
+    get_draw_bounds(ray, &data.draw_start, &data.draw_end);
+    data.tex_x = get_texture_x(game, ray, tex);
+    data.x = x;
+    data.y = data.draw_start;
+    data.tex = tex;
+    data.ray = ray;
+    draw_textured_line(game, &data);
 }
