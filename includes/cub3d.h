@@ -27,44 +27,43 @@
 # define KEY_D 100
 # define KEY_LEFT 65361
 # define KEY_RIGHT 65363
-# define KEY_SHIFT 65505 
-#define KEY_E 101
+# define KEY_SHIFT 65505
+# define KEY_E 101
 
 /* Minimap */
-# define MINIMAP_SIZE 200     // size of minimap
-# define MINIMAP_TILE 10      // size of tile in minimap
-# define MINIMAP_VIEW 20      // number of tiles visible in minimap
-# define MINIMAP_PADDING 20   // padding from screen edge
+# define MINIMAP_SIZE 200   // size of minimap
+# define MINIMAP_TILE 10    // size of tile in minimap
+# define MINIMAP_VIEW 20    // number of tiles visible in minimap
+# define MINIMAP_PADDING 20 // padding from screen edge
 
 /* Gun Animation States */
 # define GUN_IDLE 0
 # define GUN_FIRING 1
-# define GUN_FRAMES 4        // Number of firing animation frames
-
+# define GUN_FRAMES 4 // Number of firing animation frames
 
 /* Structures */
 
 typedef struct s_point
 {
-	int	x;
-	int	y;
-}			t_point;
+	int			x;
+	int			y;
+}				t_point;
 
 typedef struct s_dda
 {
-	double	ray_dir_x;
-	double	ray_dir_y;
-	double	delta_dist_x;
-	double	delta_dist_y;
-	double	side_dist_x;
-	double	side_dist_y;
-	int		step_x;
-	int		step_y;
-	int		map_x;
-	int		map_y;
-	int		hit;
-	int		side;
-}			t_dda;
+	double		ray_dir_x;
+	double		ray_dir_y;
+	double		delta_dist_x;
+	double		delta_dist_y;
+	double		side_dist_x;
+	double		side_dist_y;
+	int			step_x;
+	int			step_y;
+	int			map_x;
+	int			map_y;
+	int			hit;
+	int			side;
+}				t_dda;
 
 typedef struct s_player
 {
@@ -81,18 +80,18 @@ typedef struct s_player
 	int l_r;          // left/right movement flag
 	int u_d;          // up/down movement flag
 	int sprint;       // sprint flag
-}			t_player;
+}				t_player;
 
 typedef struct s_ray
 {
-    double ray_ngl;   // ray angle
-    double distance;  // distance to wall
-    double wall_x;    // wall hit position for texturing
-    int wall_height;  // height of wall to render
-    int side;         // which side of wall was hit (0 for x, 1 for y)
-    int map_x;        // x coordinate of map cell hit
-    int map_y;        // y coordinate of map cell hit
-}           t_ray;
+	double ray_ngl;  // ray angle
+	double distance; // distance to wall
+	double wall_x;   // wall hit position for texturing
+	int wall_height; // height of wall to render
+	int side;        // which side of wall was hit (0 for x, 1 for y)
+	int map_x;       // x coordinate of map cell hit
+	int map_y;       // y coordinate of map cell hit
+}				t_ray;
 
 typedef struct s_texture
 {
@@ -104,17 +103,16 @@ typedef struct s_texture
 	int bpp;      // bits per pixel
 	int line_len; // line length
 	int endian;   // endianness
-}			t_texture;
+}				t_texture;
 
 typedef struct s_gun
 {
-    t_texture idle;          // idle gun texture
-    t_texture fire[GUN_FRAMES]; // firing animation textures
-    int state;              // current gun state (IDLE/FIRING)
-    int frame;              // current animation frame
-    int anim_timer;         // control animation speed
-}           t_gun;
-
+	t_texture idle;             // idle gun texture
+	t_texture fire[GUN_FRAMES]; // firing animation textures
+	int state;                  // current gun state (IDLE/FIRING)
+	int frame;                  // current animation frame
+	int anim_timer;             // control animation speed
+}				t_gun;
 
 typedef struct s_data
 {
@@ -140,7 +138,7 @@ typedef struct s_map
 	int ceil_color;  // ceiling color (RGB)
 	int is_closed;   // flag to check if map is closed
 	t_texture door;  // door texture
-}			t_map;
+}				t_map;
 
 typedef struct s_game
 {
@@ -157,73 +155,72 @@ typedef struct s_game
 	char *temp_map_line; // temporary storage for map parsing
 	int fd;              // file descriptor
 	t_gun gun;           // gun data
-}			t_game;
+}				t_game;
 
 /* Function Prototypes */
 
-//Gun functions
-int load_gun_textures(t_game *game);
-void render_gun(t_game *game);
-void update_gun_animation(t_game *game);
-
+// Gun functions
+int				load_gun_textures(t_game *game);
+void			render_gun(t_game *game);
+void			update_gun_animation(t_game *game);
 
 // Minimap functions
-void	render_minimap(t_game *game);
+void			render_minimap(t_game *game);
 
 // Core game functions
-int			start_game(t_game *game);
-void		set_hooks(t_game *game);
-void		init_game(t_game *game);
+int				start_game(t_game *game);
+void			set_hooks(t_game *game);
+void			init_game(t_game *game);
 
 // Parsing functions
-void		parse_file(char *filename, t_game *game);
-int			parse_texture(char *line, t_map *map);
-int			parse_color(char *line, t_map *map);
-int			parse_element(char *line, t_map *map);
-void		parse_map_lines(t_game *game);
-int has_door_chars(t_game *game);
+void			parse_file(char *filename, t_game *game);
+int				parse_texture(char *line, t_map *map);
+int				parse_color(char *line, t_map *map);
+int				parse_element(char *line, t_map *map);
+void			parse_map_lines(t_game *game);
+int				has_door_chars(t_game *game);
 
 // Parser utilities
-int			is_empty_line(char *line);
-int			is_map_line(char *line);
-char		*trim_whitespace(char *str);
-int			check_file_extension(char *filename);
-int			skip_to_map_start(t_game *game);
-void		fill_map_array(t_game *game);
+int				is_empty_line(char *line);
+int				is_map_line(char *line);
+char			*trim_whitespace(char *str);
+int				check_file_extension(char *filename);
+int				skip_to_map_start(t_game *game);
+void			fill_map_array(t_game *game);
 
 // Map validation
-void		map_validation(t_game *game);
-char		**create_map_copy(t_game *game);
-void		flood_fill(char **map, int x, int y, t_game *game);
-void		free_map_copy(char **map_copy, int height);
-int			check_player_position(t_game *game, int x, int y);
+void			map_validation(t_game *game);
+char			**create_map_copy(t_game *game);
+void			flood_fill(char **map, int x, int y, t_game *game);
+void			free_map_copy(char **map_copy, int height);
+int				check_player_position(t_game *game, int x, int y);
 
 // Player functions
-void		init_player_direction(t_player *player);
-void		update_player_pos(t_game *game, int x, int y);
-int			find_player(t_game *game);
-void		move_player(t_game *game);
-void		rotate_player(t_game *game);
-int			check_collision(t_game *game, double new_x, double new_y);
+void			init_player_direction(t_player *player);
+void			update_player_pos(t_game *game, int x, int y);
+int				find_player(t_game *game);
+void			move_player(t_game *game);
+void			rotate_player(t_game *game);
+int				check_collision(t_game *game, double new_x, double new_y);
 
 // Math functions
-double		get_vector_length(double x, double y);
-void		normalize_vector(double *x, double *y);
-double		get_vector_angle(double x, double y);
-void		get_perpendicular(double *x, double *y);
-void		cast_single_ray(t_game *game, t_ray *ray, int x);
+double			get_vector_length(double x, double y);
+void			normalize_vector(double *x, double *y);
+double			get_vector_angle(double x, double y);
+void			get_perpendicular(double *x, double *y);
+void			cast_single_ray(t_game *game, t_ray *ray, int x);
 
 // Rendering functions
-void		cast_rays(t_game *game);
-void		render_walls(t_game *game);
-void		draw_vertical_line(t_game *game, int x, int start, int end);
+void			cast_rays(t_game *game);
+void			render_walls(t_game *game);
+void			draw_vertical_line(t_game *game, int x, int start, int end);
 
 // Texture functions
-int			load_textures(t_game *game);
-void		apply_texture(t_game *game, int x, t_ray *ray);
+int				load_textures(t_game *game);
+void			apply_texture(t_game *game, int x, t_ray *ray);
 
 // Cleanup functions
-void		clean_game(t_game *game);
-int			clean_exit_msg(char *msg, t_game *game);
+void			clean_game(t_game *game);
+int				clean_exit_msg(char *msg, t_game *game);
 
 #endif
