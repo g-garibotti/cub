@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:14:27 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/07 10:53:44 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/07 16:36:08 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,25 +64,25 @@ static void	clean_map(void *mlx, t_map *map)
 
 static void	clean_window(t_game *game)
 {
-	if (!game)
+	if (!game || !game->mlx)
 		return ;
-	if (game->img && game->mlx)
+	// First destroy all images
+	if (game->img)
 	{
 		mlx_destroy_image(game->mlx, game->img);
 		game->img = NULL;
 		game->addr = NULL;
 	}
-	if (game->win && game->mlx)
+	// Then destroy the window if it exists
+	if (game->win)
 	{
 		mlx_destroy_window(game->mlx, game->win);
 		game->win = NULL;
 	}
-	if (game->mlx)
-	{
-		mlx_destroy_display(game->mlx);
-		free(game->mlx);
-		game->mlx = NULL;
-	}
+	// Finally clean up MLX itself
+	mlx_destroy_display(game->mlx);
+	free(game->mlx);
+	game->mlx = NULL;
 }
 
 void	clean_game(t_game *game)
@@ -119,10 +119,9 @@ int	clean_exit_msg(char *msg, t_game *game)
 		ft_putstr_fd(msg, 2);
 		ft_putstr_fd("\n", 2);
 	}
-	if (game)
-	{
+	if (game && game->win && game->mlx)
+		mlx_loop_end(game->mlx); // This is better than direct exit
+	else if (game)
 		clean_game(game);
-	}
-	exit(1);
 	return (1);
 }
