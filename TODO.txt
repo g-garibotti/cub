@@ -1,14 +1,1 @@
-Great! Now we have a working base with:
-
-1. Map parsing ✓
-2. Player movement and collision ✓
-3. Basic raycasting ✓
-4. Textured walls ✓
-5. Minimap (showing player position and walls) ✓
-6. Mouse rotation (for smoother camera control) ✓
-7. Sprint feature (increased movement speed while holding a key) ✓
-
-5. Texture animations
-6. Doors that can be opened/closed
-
-Which one would you like to implement first? Or is there something else you'd like to improve in the existing code?
+if there is no path for DO and there is a d or a D in the map exit

@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 09:45:20 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/05 17:30:17 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/07 14:19:52 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,10 @@ static int	is_valid_position(int x, int y, t_game *game)
 	return (x >= 0 && x < game->map.width && y >= 0 && y < game->map.height);
 }
 
-static int can_flood(char c)
+static int	can_flood(char c)
 {
-    return (c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W' || c == 'X');
+	return (c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W'
+		|| c == 'X');
 }
 
 void	flood_fill(char **map, int x, int y, t_game *game)

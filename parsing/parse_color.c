@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 14:19:29 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/07 11:06:31 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/07 14:20:52 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	ft_str_is_numeric(const char *str)
 	return (1);
 }
 
-//split 220,110,0 into 220 110 0 validate each value
+// split 220,110,0 into 220 110 0 validate each value
 static int	parse_rgb_values(char *str, int *r, int *g, int *b)
 {
 	char	**split;
@@ -66,12 +66,12 @@ static int	parse_rgb_values(char *str, int *r, int *g, int *b)
 	return (1);
 }
 
-//str RGB into int bit shift so 220,110,0 becomes 220 << 16 | 110 << 8 | 0
-//220 (RED):   11011100 00000000 00000000  (shifted 16 left)
-//110 (GREEN): 00000000 01101100 00000000  (shifted 8 left)
-//0 (BLUE):    00000000 00000000 00000000
-//combined:    11011100 01101100 00000000
-//in hexa:     0xDC6E00
+// str RGB into int bit shift so 220,110,0 becomes 220 << 16 | 110 << 8 | 0
+// 220 (RED):   11011100 00000000 00000000  (shifted 16 left)
+// 110 (GREEN): 00000000 01101100 00000000  (shifted 8 left)
+// 0 (BLUE):    00000000 00000000 00000000
+// combined:    11011100 01101100 00000000
+// in hexa:     0xDC6E00
 int	parse_color(char *line, t_map *map)
 {
 	char	**split;
@@ -95,10 +95,7 @@ int	parse_color(char *line, t_map *map)
 	else if (split[0][0] == 'C')
 		map->ceil_color = (r << 16) | (g << 8) | b;
 	else
-	{
-		ft_free_split(split);
-		return (0);
-	}
+		return (ft_free_split(split), 0);
 	ft_free_split(split);
 	return (1);
 }

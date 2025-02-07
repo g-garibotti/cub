@@ -181,6 +181,7 @@ int			parse_texture(char *line, t_map *map);
 int			parse_color(char *line, t_map *map);
 int			parse_element(char *line, t_map *map);
 void		parse_map_lines(t_game *game);
+int has_door_chars(t_game *game);
 
 // Parser utilities
 int			is_empty_line(char *line);

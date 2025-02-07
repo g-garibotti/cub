@@ -6,27 +6,27 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 14:03:24 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/05 17:41:35 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/07 14:19:22 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-static int set_texture_path(char *identifier, char *path, t_map *map)
+static int	set_texture_path(char *identifier, char *path, t_map *map)
 {
-    if (ft_strcmp(identifier, "NO") == 0)
-        map->north.path = ft_strdup(path);
-    else if (ft_strcmp(identifier, "SO") == 0)
-        map->south.path = ft_strdup(path);
-    else if (ft_strcmp(identifier, "WE") == 0)
-        map->west.path = ft_strdup(path);
-    else if (ft_strcmp(identifier, "EA") == 0)
-        map->east.path = ft_strdup(path);
-    else if (ft_strcmp(identifier, "DO") == 0)  // Add this for door texture
-        map->door.path = ft_strdup(path);
-    else
-        return (0);
-    return (1);
+	if (ft_strcmp(identifier, "NO") == 0)
+		map->north.path = ft_strdup(path);
+	else if (ft_strcmp(identifier, "SO") == 0)
+		map->south.path = ft_strdup(path);
+	else if (ft_strcmp(identifier, "WE") == 0)
+		map->west.path = ft_strdup(path);
+	else if (ft_strcmp(identifier, "EA") == 0)
+		map->east.path = ft_strdup(path);
+	else if (ft_strcmp(identifier, "DO") == 0)
+		map->door.path = ft_strdup(path);
+	else
+		return (0);
+	return (1);
 }
 
 static int	check_duplicate_texture(char *identifier, t_map *map)
