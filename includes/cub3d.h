@@ -36,6 +36,12 @@
 # define MINIMAP_VIEW 20      // number of tiles visible in minimap
 # define MINIMAP_PADDING 20   // padding from screen edge
 
+/* Gun Animation States */
+# define GUN_IDLE 0
+# define GUN_FIRING 1
+# define GUN_FRAMES 4        // Number of firing animation frames
+
+
 /* Structures */
 
 typedef struct s_point
@@ -100,6 +106,16 @@ typedef struct s_texture
 	int endian;   // endianness
 }			t_texture;
 
+typedef struct s_gun
+{
+    t_texture idle;          // idle gun texture
+    t_texture fire[GUN_FRAMES]; // firing animation textures
+    int state;              // current gun state (IDLE/FIRING)
+    int frame;              // current animation frame
+    int anim_timer;         // control animation speed
+}           t_gun;
+
+
 typedef struct s_data
 {
 	int			draw_start;
@@ -140,9 +156,16 @@ typedef struct s_game
 	t_ray *rays;         // array of rays
 	char *temp_map_line; // temporary storage for map parsing
 	int fd;              // file descriptor
+	t_gun gun;           // gun data
 }			t_game;
 
 /* Function Prototypes */
+
+//Gun functions
+int load_gun_textures(t_game *game);
+void render_gun(t_game *game);
+void update_gun_animation(t_game *game);
+
 
 // Minimap functions
 void	render_minimap(t_game *game);

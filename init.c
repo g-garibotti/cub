@@ -6,11 +6,33 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 12:15:31 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/05 17:30:56 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/07 12:04:08 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/cub3d.h"
+
+static void init_gun(t_gun *gun)
+{
+    int i;
+
+    gun->idle.path = ft_strdup("./textures/gun_idle.xpm");
+    gun->idle.img = NULL;
+    gun->idle.addr = NULL;
+    
+    for (i = 0; i < GUN_FRAMES; i++)
+    {
+        // Allocate memory for path string and format it with frame number
+        char frame_path[100];
+        snprintf(frame_path, sizeof(frame_path), "./textures/gun_fire_%d.xpm", i + 1);
+        gun->fire[i].path = ft_strdup(frame_path);
+        gun->fire[i].img = NULL;
+        gun->fire[i].addr = NULL;
+    }
+    gun->state = GUN_IDLE;
+    gun->frame = 0;
+    gun->anim_timer = 0;
+}
 
 static void	init_map(t_map *map)
 {
@@ -66,4 +88,5 @@ void	init_game(t_game *game)
 	game->fd = -1;
 	init_map(&game->map);
 	init_player(&game->player);
+	init_gun(&game->gun);
 }

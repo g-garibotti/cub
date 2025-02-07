@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 13:52:16 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/06 13:28:28 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/07 12:08:03 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,28 @@ static int	game_loop(t_game *game)
     cast_rays(game);
     render_walls(game);
     render_minimap(game);
+    // Update and render gun
+    update_gun_animation(game);
+    render_gun(game);
     // Put the image to window
     mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
+    return (0);
+}
+
+static int handle_mouse_button(int button, int x, int y, t_game *game)
+{
+    (void)x;
+    (void)y;
+    
+    if (button == 1) // Left mouse button
+    {
+        if (game->gun.state == GUN_IDLE)
+        {
+            game->gun.state = GUN_FIRING;
+            game->gun.frame = 0;
+            game->gun.anim_timer = 0;
+        }
+    }
     return (0);
 }
 
@@ -132,6 +152,7 @@ void set_hooks(t_game *game)
     mlx_hook(game->win, 2, 1L<<0, key_press, game);
     mlx_hook(game->win, 3, 1L<<1, key_release, game);
     mlx_hook(game->win, 6, 1L<<6, handle_mouse, game);
+    mlx_hook(game->win, 4, 1L<<2, handle_mouse_button, game); // Mouse button press
     mlx_hook(game->win, 17, 0, clean_exit_msg, game);
     mlx_loop_hook(game->mlx, game_loop, game);
 }

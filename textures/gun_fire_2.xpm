@@ -1,0 +1,28 @@
+/* XPM */
+static char *gun_fire_2[] = {
+/* columns rows colors chars-per-pixel */
+"32 16 6 1",
+"  c #2C2C2C", /* Dark grey for gun metal */
+". c #484848", /* Mid grey for details */
+"X c #686868", /* Light grey for highlights */
+"o c #8C8C8C", /* Bright grey for shine */
+"+ c #FFA500", /* Orange for muzzle flash */
+"O c None",
+/* pixels */
+"OOOOOOOOOOOOO+OO+OOOOOOOOOOOOOOO",
+"OOOOOOOOOOOO++++++OOOOOOOOOOOOOO",
+"OOOOOOOOOOO++++++++OOOOOOOOOOOOO",
+"OOOOOOOOOO++++++++++OOOOOOOOOOOO",
+"OOOOOOOOO++++++++++++OOOOOOOOOOO",
+"OOOOOOOOOO++      ++OOOOOOOOOOOO",
+"OOOOOOOOOOO  ....  OOOOOOOOOOOOO",
+"OOOOOOOOOO  XXXXXX  OOOOOOOOOOOO",
+"OOOOOOOOO  XooooooX  OOOOOOOOOOO",
+"OOOOOOOO             OOOOOOOOOOO",
+"OOOOOOO  XXXXXXXXXXX  OOOOOOOOOO",
+"OOOOOO  XXXXXXXXXXXXX  OOOOOOOOO",
+"OOOOO                   OOOOOOOO",
+"OOOO  XXXXXXXXXXXXXXX  OOOOOOOOO",
+"OOO  XXXXXXXXXXXXXXXXX  OOOOOOOO",
+"OO                      OOOOOOOO"
+};

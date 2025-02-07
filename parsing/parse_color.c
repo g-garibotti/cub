@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 14:19:29 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/05 15:23:26 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/07 11:06:31 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,11 @@ int	parse_color(char *line, t_map *map)
 	if (!parse_rgb_values(split[1], &r, &g, &b) || !is_valid_rgb(r, g, b))
 		return (ft_free_split(split), 0);
 	if (split[0][0] == 'F')
+	{
+		printf("FLOOR COLOR: %d %d %d\n", r, g, b);
 		map->floor_color = (r << 16) | (g << 8) | b;
+		printf("FLOOR COLOR: %x\n", map->floor_color);
+	}
 	else if (split[0][0] == 'C')
 		map->ceil_color = (r << 16) | (g << 8) | b;
 	else
