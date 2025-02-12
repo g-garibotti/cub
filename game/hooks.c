@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 13:52:16 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/07 16:38:53 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/12 14:04:25 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,39 +19,37 @@ static int	check_door_interaction(t_game *game, double check_x, double check_y)
 
 	map_x = (int)check_x;
 	map_y = (int)check_y;
-	// Check if position is within map bounds
 	if (map_x < 0 || map_x >= game->map.width || map_y < 0
 		|| map_y >= game->map.height)
 		return (0);
-	// Check if we're looking at a door
 	return (game->map.grid[map_y][map_x] == 'd'
 		|| game->map.grid[map_y][map_x] == 'D');
 }
 
-static int	key_press(int keycode, t_game *game)
+static void	toggle_door(t_game *game)
 {
 	double	check_x;
 	double	check_y;
 	int		map_x;
 	int		map_y;
 
-	if (keycode == KEY_E)
+	check_x = game->player.pos_x + game->player.dir_x * 1.0;
+	check_y = game->player.pos_y + game->player.dir_y * 1.0;
+	if (check_door_interaction(game, check_x, check_y))
 	{
-		// Calculate the position in front of the player
-		check_x = game->player.pos_x + game->player.dir_x * 1.0;
-		check_y = game->player.pos_y + game->player.dir_y * 1.0;
-		// Check if we can interact with a door at this position
-		if (check_door_interaction(game, check_x, check_y))
-		{
-			map_x = (int)check_x;
-			map_y = (int)check_y;
-			// Toggle door state
-			if (game->map.grid[map_y][map_x] == 'd')
-				game->map.grid[map_y][map_x] = 'D';
-			else if (game->map.grid[map_y][map_x] == 'D')
-				game->map.grid[map_y][map_x] = 'd';
-		}
+		map_x = (int)check_x;
+		map_y = (int)check_y;
+		if (game->map.grid[map_y][map_x] == 'd')
+			game->map.grid[map_y][map_x] = 'D';
+		else if (game->map.grid[map_y][map_x] == 'D')
+			game->map.grid[map_y][map_x] = 'd';
 	}
+}
+
+static int	key_press(int keycode, t_game *game)
+{
+	if (keycode == KEY_E)
+		toggle_door(game);
 	else if (keycode == KEY_ESC)
 		return (clean_exit_msg(NULL, game));
 	else if (keycode == KEY_W)
@@ -73,98 +71,23 @@ static int	key_press(int keycode, t_game *game)
 
 static int	key_release(int keycode, t_game *game)
 {
-	if (keycode == KEY_W)
+	if (keycode == KEY_W || keycode == KEY_S)
 		game->player.u_d = 0;
-	else if (keycode == KEY_S)
-		game->player.u_d = 0;
-	else if (keycode == KEY_A)
+	else if (keycode == KEY_A || keycode == KEY_D)
 		game->player.l_r = 0;
-	else if (keycode == KEY_D)
-		game->player.l_r = 0;
-	else if (keycode == KEY_LEFT)
-		game->player.rot = 0;
-	else if (keycode == KEY_RIGHT)
+	else if (keycode == KEY_LEFT || keycode == KEY_RIGHT)
 		game->player.rot = 0;
 	else if (keycode == KEY_SHIFT)
 		game->player.sprint = 0;
 	return (0);
 }
 
-int	handle_mouse(int x, int y, t_game *game)
-{
-	static int	last_x = -1;
-	int			delta_x;
-
-	(void)y; // We only care about horizontal mouse movement
-	if (last_x == -1)
-	{
-		last_x = x;
-		return (0);
-	}
-	delta_x = x - last_x;
-	if (delta_x != 0)
-	{
-		// Convert mouse movement to rotation
-		// Adjust the multiplier (0.003) to change mouse sensitivity
-		game->player.angle += delta_x * 0.003;
-		game->player.dir_x = cos(game->player.angle);
-		game->player.dir_y = sin(game->player.angle);
-		game->player.plane_x = -game->player.dir_y * 0.66;
-		game->player.plane_y = game->player.dir_x * 0.66;
-	}
-	last_x = x;
-	return (0);
-}
-
-static int	game_loop(t_game *game)
-{
-	// Update player position and rotation
-	move_player(game);
-	rotate_player(game);
-	// Clear the screen (fill with black)
-	ft_memset(game->addr, 0, S_W * S_H * sizeof(int));
-	// Cast rays and render the scene
-	cast_rays(game);
-	render_walls(game);
-	render_minimap(game);
-	// Update and render gun
-	update_gun_animation(game);
-	render_gun(game);
-	// Put the image to window
-	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
-	return (0);
-}
-
-static int	handle_mouse_button(int button, int x, int y, t_game *game)
-{
-	(void)x;
-	(void)y;
-	if (button == 1) // Left mouse button
-	{
-		if (game->gun.state == GUN_IDLE)
-		{
-			game->gun.state = GUN_FIRING;
-			game->gun.frame = 0;
-			game->gun.anim_timer = 0;
-		}
-	}
-	return (0);
-}
-
-static int	handle_window_close(t_game *game)
-{
-	return (clean_exit_msg(NULL, game));
-}
-
-// Then modify your set_hooks function
 void	set_hooks(t_game *game)
 {
 	mlx_hook(game->win, 2, 1L << 0, key_press, game);
 	mlx_hook(game->win, 3, 1L << 1, key_release, game);
 	mlx_hook(game->win, 6, 1L << 6, handle_mouse, game);
 	mlx_hook(game->win, 4, 1L << 2, handle_mouse_button, game);
-	// Change this line
 	mlx_hook(game->win, 17, 0, handle_window_close, game);
-	// Use the new handler
 	mlx_loop_hook(game->mlx, game_loop, game);
 }
