@@ -6,32 +6,31 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 12:15:31 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/07 12:04:08 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/12 13:46:01 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/cub3d.h"
 
-static void init_gun(t_gun *gun)
+static void	init_gun(t_gun *gun)
 {
-    int i;
+	int	i;
 
-    gun->idle.path = ft_strdup("./textures/gun_idle.xpm");
-    gun->idle.img = NULL;
-    gun->idle.addr = NULL;
-    
-    for (i = 0; i < GUN_FRAMES; i++)
-    {
-        // Allocate memory for path string and format it with frame number
-        char frame_path[100];
-        snprintf(frame_path, sizeof(frame_path), "./textures/gun_fire_%d.xpm", i + 1);
-        gun->fire[i].path = ft_strdup(frame_path);
-        gun->fire[i].img = NULL;
-        gun->fire[i].addr = NULL;
-    }
-    gun->state = GUN_IDLE;
-    gun->frame = 0;
-    gun->anim_timer = 0;
+	gun->idle.path = ft_strdup("./textures/gun_idle.xpm");
+	gun->idle.img = NULL;
+	gun->idle.addr = NULL;
+	i = 0;
+	while (i < GUN_FRAMES)
+	{
+		gun->fire[i].path = ft_strjoin("./textures/gun_fire_", ft_itoa(i + 1));
+		gun->fire[i].path = ft_strjoin_free(gun->fire[i].path, ".xpm");
+		gun->fire[i].img = NULL;
+		gun->fire[i].addr = NULL;
+		i++;
+	}
+	gun->state = GUN_IDLE;
+	gun->frame = 0;
+	gun->anim_timer = 0;
 }
 
 static void	init_map(t_map *map)
@@ -55,25 +54,25 @@ static void	init_map(t_map *map)
 	map->floor_color = -1;
 	map->ceil_color = -1;
 	map->door.img = NULL;
-    map->door.path = NULL;
-    map->door.addr = NULL;
+	map->door.path = NULL;
+	map->door.addr = NULL;
 }
 
 static void	init_player(t_player *player)
 {
-    player->pos_x = 0;
-    player->pos_y = 0;
-    player->dir_x = 0;
-    player->dir_y = 0;
-    player->angle = 0;
-    player->plane_x = 0;
-    player->plane_y = 0;
-    player->orientation = 0;
-    player->fov_rd = 0;
-    player->rot = 0;
-    player->l_r = 0;
-    player->u_d = 0;
-    player->sprint = 0;
+	player->pos_x = 0;
+	player->pos_y = 0;
+	player->dir_x = 0;
+	player->dir_y = 0;
+	player->angle = 0;
+	player->plane_x = 0;
+	player->plane_y = 0;
+	player->orientation = 0;
+	player->fov_rd = 0;
+	player->rot = 0;
+	player->l_r = 0;
+	player->u_d = 0;
+	player->sprint = 0;
 }
 
 void	init_game(t_game *game)

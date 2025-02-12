@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:14:27 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/07 16:36:08 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/12 13:43:58 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,20 +66,17 @@ static void	clean_window(t_game *game)
 {
 	if (!game || !game->mlx)
 		return ;
-	// First destroy all images
 	if (game->img)
 	{
 		mlx_destroy_image(game->mlx, game->img);
 		game->img = NULL;
 		game->addr = NULL;
 	}
-	// Then destroy the window if it exists
 	if (game->win)
 	{
 		mlx_destroy_window(game->mlx, game->win);
 		game->win = NULL;
 	}
-	// Finally clean up MLX itself
 	mlx_destroy_display(game->mlx);
 	free(game->mlx);
 	game->mlx = NULL;
@@ -120,7 +117,7 @@ int	clean_exit_msg(char *msg, t_game *game)
 		ft_putstr_fd("\n", 2);
 	}
 	if (game && game->win && game->mlx)
-		mlx_loop_end(game->mlx); // This is better than direct exit
+		mlx_loop_end(game->mlx);
 	else if (game)
 		clean_game(game);
 	return (1);

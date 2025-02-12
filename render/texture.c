@@ -6,30 +6,30 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 14:13:30 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/06 13:48:45 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/12 13:53:14 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-static t_texture *select_wall_texture(t_game *game, t_ray *ray)
+static t_texture	*select_wall_texture(t_game *game, t_ray *ray)
 {
-    if (game->map.grid[ray->map_y][ray->map_x] == 'd')
-        return &game->map.door;
-    if (ray->side == 0)
-    {
-        if (game->player.pos_x > ray->map_x)
-            return (&game->map.west);
-        else
-            return (&game->map.east);
-    }
-    else
-    {
-        if (game->player.pos_y > ray->map_y)
-            return (&game->map.north);
-        else
-            return (&game->map.south);
-    }
+	if (game->map.grid[ray->map_y][ray->map_x] == 'd')
+		return (&game->map.door);
+	if (ray->side == 0)
+	{
+		if (game->player.pos_x > ray->map_x)
+			return (&game->map.west);
+		else
+			return (&game->map.east);
+	}
+	else
+	{
+		if (game->player.pos_y > ray->map_y)
+			return (&game->map.north);
+		else
+			return (&game->map.south);
+	}
 }
 
 static void	get_draw_bounds(t_ray *ray, int *start, int *end)
@@ -63,8 +63,8 @@ static void	draw_textured_line(t_game *game, t_data *data)
 
 	while (data->y < data->draw_end)
 	{
-		tex_y = (int)((double)(data->y - (-data->ray->wall_height / 2 + S_H / 2))
-				* data->tex->height / data->ray->wall_height);
+		tex_y = (int)((double)(data->y - (-data->ray->wall_height / 2 + S_H
+						/ 2)) * data->tex->height / data->ray->wall_height);
 		if (tex_y >= 0 && tex_y < data->tex->height && data->tex_x >= 0
 			&& data->tex_x < data->tex->width)
 			game->addr[data->y * S_W + data->x] = data->tex->addr[tex_y
@@ -73,17 +73,17 @@ static void	draw_textured_line(t_game *game, t_data *data)
 	}
 }
 
-void apply_texture(t_game *game, int x, t_ray *ray)
+void	apply_texture(t_game *game, int x, t_ray *ray)
 {
-    t_texture *tex;
-    t_data data;
+	t_texture	*tex;
+	t_data		data;
 
-    tex = select_wall_texture(game, ray);
-    get_draw_bounds(ray, &data.draw_start, &data.draw_end);
-    data.tex_x = get_texture_x(game, ray, tex);
-    data.x = x;
-    data.y = data.draw_start;
-    data.tex = tex;
-    data.ray = ray;
-    draw_textured_line(game, &data);
+	tex = select_wall_texture(game, ray);
+	get_draw_bounds(ray, &data.draw_start, &data.draw_end);
+	data.tex_x = get_texture_x(game, ray, tex);
+	data.x = x;
+	data.y = data.draw_start;
+	data.tex = tex;
+	data.ray = ray;
+	draw_textured_line(game, &data);
 }
