@@ -1,83 +1,91 @@
+
+NAME		= cub3d
+CC			= cc
+CFLAGS		= -Wall -Wextra -Werror
+MLXFLAGS	= -lmlx -lXext -lX11 -lm
+
 # Colors
-GREEN = \033[0;32m
-YELLOW = \033[0;33m
-RED = \033[0;31m
-BLUE = \033[0;34m
-RESET = \033[0m
+GREEN		= \033[0;32m
+YELLOW		= \033[0;33m
+RED			= \033[0;31m
+BLUE		= \033[0;34m
+RESET		= \033[0m
 
-NAME = cub3d
-CC = cc
-CFLAGS = -Wall -Wextra -Werror
-MLXFLAGS = -lmlx -lXext -lX11 -lm
+# Main sources
+SRCS		= main.c \
+			  init.c \
+			  init_player_pos.c \
+			  cleanup.c
 
-# Source files
-SRCS = $(wildcard *.c)
-PARSING_SRCS = $(wildcard parsing/*.c)
-GAME_SRCS = $(wildcard game/*.c)
-RENDER_SRCS = $(wildcard render/*.c)
-MATH_SRCS = $(wildcard math/*.c)
-ALL_SRCS = $(SRCS) $(PARSING_SRCS) $(GAME_SRCS) $(RENDER_SRCS) $(MATH_SRCS)
+# Directories
+GAME_DIR	= game/
+PARSE_DIR	= parsing/
+RENDER_DIR	= render/
+MATH_DIR	= math/
 
-OBJS_DIR = objs
-OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o) \
-       $(PARSING_SRCS:parsing/%.c=$(OBJS_DIR)/parsing/%.o) \
-       $(GAME_SRCS:game/%.c=$(OBJS_DIR)/game/%.o) \
-       $(RENDER_SRCS:render/%.c=$(OBJS_DIR)/render/%.o) \
-       $(MATH_SRCS:math/%.c=$(OBJS_DIR)/math/%.o)
+# Game sources
+GAME_SRCS	= $(GAME_DIR)game_init.c \
+			  $(GAME_DIR)gun.c \
+			  $(GAME_DIR)hooks.c \
+			  $(GAME_DIR)hooks_utils.c \
+			  $(GAME_DIR)minimap.c \
+			  $(GAME_DIR)movement.c
 
-DEPS = $(OBJS:.o=.d)
+# Parsing sources
+PARSE_SRCS	= $(PARSE_DIR)fill_grid.c \
+			  $(PARSE_DIR)parse_color.c \
+			  $(PARSE_DIR)parser.c \
+			  $(PARSE_DIR)parser_element.c \
+			  $(PARSE_DIR)parser_map.c \
+			  $(PARSE_DIR)parser_utils.c \
+			  $(PARSE_DIR)parse_texture.c \
+			  $(PARSE_DIR)player_pos_utils.c \
+			  $(PARSE_DIR)validate_map.c \
+			  $(PARSE_DIR)validate_map_utils.c
 
-LIBFT = libft/libft.a
-MLX = minilibx-linux/libmlx.a
+# Render sources
+RENDER_SRCS	= $(RENDER_DIR)raycast.c \
+			  $(RENDER_DIR)texture.c \
+			  $(RENDER_DIR)texture_load.c
+
+# Math sources
+MATH_SRCS	= $(MATH_DIR)dda.c \
+			  $(MATH_DIR)vectors.c
+
+# All sources combined
+ALL_SRCS	= $(SRCS) $(GAME_SRCS) $(PARSE_SRCS) $(RENDER_SRCS) $(MATH_SRCS)
+
+# Objects
+OBJS_DIR	= objs/
+OBJS		= $(addprefix $(OBJS_DIR), $(ALL_SRCS:.c=.o))
+
+# Dependencies
+DEPS		= $(OBJS:.o=.d)
+
+# Libraries
+LIBFT		= libft/libft.a
+MLX			= minilibx-linux/libmlx.a
 
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT) $(MLX)
 	@echo "$(YELLOW)Linking $(NAME)...$(RESET)"
-	$(CC) $(CFLAGS) $(OBJS) -Llibft -lft -Lminilibx-linux $(MLXFLAGS) -o $(NAME) || \
-		(echo "$(RED)Linking failed!$(RESET)" && exit 1)
+	@$(CC) $(CFLAGS) $(OBJS) -Llibft -lft -Lminilibx-linux $(MLXFLAGS) -o $(NAME)
 	@echo "$(GREEN)$(NAME) successfully created!$(RESET)"
 
-$(OBJS_DIR)/%.o: %.c
-	@mkdir -p $(@D)
+$(OBJS_DIR)%.o: %.c
+	@mkdir -p $(dir $@)
 	@echo "$(YELLOW)Compiling $<...$(RESET)"
-	@$(CC) $(CFLAGS) -MMD -MP -I./includes -Ilibft -Iminilibx-linux -c $< -o $@ || \
-		(echo "$(RED)Compilation of $< failed!$(RESET)" && exit 1)
-
-$(OBJS_DIR)/parsing/%.o: parsing/%.c
-	@mkdir -p $(@D)
-	@echo "$(YELLOW)Compiling $<...$(RESET)"
-	@$(CC) $(CFLAGS) -MMD -MP -I./includes -Ilibft -Iminilibx-linux -c $< -o $@ || \
-		(echo "$(RED)Compilation of $< failed!$(RESET)" && exit 1)
-
-$(OBJS_DIR)/game/%.o: game/%.c
-	@mkdir -p $(@D)
-	@echo "$(YELLOW)Compiling $<...$(RESET)"
-	@$(CC) $(CFLAGS) -MMD -MP -I./includes -Ilibft -Iminilibx-linux -c $< -o $@ || \
-		(echo "$(RED)Compilation of $< failed!$(RESET)" && exit 1)
-
-$(OBJS_DIR)/render/%.o: render/%.c
-	@mkdir -p $(@D)
-	@echo "$(YELLOW)Compiling $<...$(RESET)"
-	@$(CC) $(CFLAGS) -MMD -MP -I./includes -Ilibft -Iminilibx-linux -c $< -o $@ || \
-		(echo "$(RED)Compilation of $< failed!$(RESET)" && exit 1)
-
-$(OBJS_DIR)/math/%.o: math/%.c
-	@mkdir -p $(@D)
-	@echo "$(YELLOW)Compiling $<...$(RESET)"
-	@$(CC) $(CFLAGS) -MMD -MP -I./includes -Ilibft -Iminilibx-linux -c $< -o $@ || \
-		(echo "$(RED)Compilation of $< failed!$(RESET)" && exit 1)
+	@$(CC) $(CFLAGS) -MMD -MP -I./includes -Ilibft -Iminilibx-linux -c $< -o $@
 
 $(MLX):
 	@echo "$(YELLOW)Compiling MLX...$(RESET)"
-	@$(MAKE) -C minilibx-linux || \
-		(echo "$(RED)MLX compilation failed!$(RESET)" && exit 1)
+	@$(MAKE) -C minilibx-linux
 	@echo "$(GREEN)MLX compilation successful!$(RESET)"
 
 $(LIBFT):
 	@echo "$(YELLOW)Compiling libft...$(RESET)"
-	@$(MAKE) -C libft || \
-		(echo "$(RED)Libft compilation failed!$(RESET)" && exit 1)
+	@$(MAKE) -C libft
 	@echo "$(GREEN)Libft compilation successful!$(RESET)"
 
 clean:
