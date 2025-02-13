@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:04:41 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/13 10:57:54 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:30:35 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	game_loop(t_game *game)
 	rotate_player(game);
 	ft_memset(game->addr, 0, S_W * S_H * sizeof(int));
 	cast_rays(game);
-	render_walls(game);
+	cast_rays(game);
 	render_minimap(game);
 	update_gun_animation(game);
 	render_gun(game);

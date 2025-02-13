@@ -6,12 +6,13 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 14:06:30 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/12 13:56:22 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:18:35 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
+// Delta distances represent distance between X or Y intersections
 static void	init_dda_values(t_dda *dda, t_game *game, double camera_x)
 {
 	dda->ray_dir_x = game->player.dir_x + game->player.plane_x * camera_x;
@@ -23,6 +24,12 @@ static void	init_dda_values(t_dda *dda, t_game *game, double camera_x)
 	dda->hit = 0;
 }
 
+/*
+** Calculates initial step direction and side distances for DDA
+** Determines which direction to step in X and Y
+** Computes distance to first X and Y intersections with grid
+** Step values are either 1 or -1 depending on ray direction
+*/
 static void	calculate_step_and_side_dist(t_dda *dda, t_game *game)
 {
 	if (dda->ray_dir_x < 0)
@@ -51,6 +58,12 @@ static void	calculate_step_and_side_dist(t_dda *dda, t_game *game)
 	}
 }
 
+/*
+** Executes the DDA algorithm to find wall intersection
+** Steps through the map grid until a wall is hit
+** Keeps track of which side (X or Y) of wall was hit
+** Updates map coordinates as it moves through grid
+*/
 static void	perform_dda(t_dda *dda, t_game *game)
 {
 	while (dda->hit == 0)

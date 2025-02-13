@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 13:15:08 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/12 13:49:29 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:57:52 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	main(int argc, char **argv)
 	parse_file(argv[1], &game);
 	if (start_game(&game) != 0)
 	{
+		printf("Error\nGame exited with an error\n");
 		clean_game(&game);
 		return (1);
 	}

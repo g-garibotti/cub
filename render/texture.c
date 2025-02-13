@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 14:13:30 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/12 13:53:14 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:51:34 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,13 @@ static t_texture	*select_wall_texture(t_game *game, t_ray *ray)
 	}
 }
 
+/*
+** Calculates the vertical drawing boundaries for a wall slice
+** Uses wall height and screen dimensions to determine:
+** - Where to start drawing the wall
+** - Where to end drawing the wall
+** Ensures boundaries stay within screen limits
+*/
 static void	get_draw_bounds(t_ray *ray, int *start, int *end)
 {
 	int	line_height;
@@ -73,6 +80,14 @@ static void	draw_textured_line(t_game *game, t_data *data)
 	}
 }
 
+/*
+** Main texture application function
+** Coordinates the entire wall texturing process:
+** - Selects appropriate texture
+** - Calculates drawing boundaries
+** - Determines texture coordinates
+** - Renders the textured wall slice
+*/
 void	apply_texture(t_game *game, int x, t_ray *ray)
 {
 	t_texture	*tex;

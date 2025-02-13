@@ -6,12 +6,18 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 14:09:40 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/12 13:55:11 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:30:24 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
+/*
+** Draws a vertical line for wall rendering
+** Renders ceiling color from top of screen to wall start
+** Applies texture to wall section
+** Renders floor color from wall end to bottom of screen
+*/
 void	draw_vertical_line(t_game *game, int x, int start, int end)
 {
 	int	y;
@@ -28,6 +34,14 @@ void	draw_vertical_line(t_game *game, int x, int start, int end)
 		game->addr[(y++) * S_W + x] = color;
 }
 
+/*
+** Main ray casting loop that processes all screen columns
+** For each column:
+** - Casts a ray and calculates wall distances
+** - Determines wall height and drawing bounds
+** - Handles wall projection to create 3D effect
+** - Calls draw_vertical_line to render the column
+*/
 void	cast_rays(t_game *game)
 {
 	int		x;
@@ -51,9 +65,4 @@ void	cast_rays(t_game *game)
 		draw_vertical_line(game, x, draw_start, draw_end);
 		x++;
 	}
-}
-
-void	render_walls(t_game *game)
-{
-	cast_rays(game);
 }

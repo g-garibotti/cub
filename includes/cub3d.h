@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:06:29 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/13 10:27:44 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:30:19 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,7 +212,6 @@ int				clean_exit_msg(char *msg, t_game *game);
 ** Rendering Functions
 */
 void			cast_rays(t_game *game);
-void			render_walls(t_game *game);
 void			render_minimap(t_game *game);
 void			render_gun(t_game *game);
 void			draw_vertical_line(t_game *game, int x, int start, int end);
