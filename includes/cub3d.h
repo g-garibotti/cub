@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:06:29 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/12 14:09:30 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/13 10:27:44 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,15 @@
 # define GUN_FIRING 1
 # define GUN_FRAMES 4
 
+//Coordinates of a pixel, used in minimap and 2D calculs
 typedef struct s_point
 {
 	int			x;
 	int			y;
 }				t_point;
 
+//Digital Differential Analysis
+//Used to calculate the distance of the ray to the next wall
 typedef struct s_dda
 {
 	double		ray_dir_x;
@@ -83,6 +86,7 @@ typedef struct s_dda
 	int			side;
 }				t_dda;
 
+//Player struct, pos/look vector/viewing angle/fov...
 typedef struct s_player
 {
 	double		pos_x;
@@ -100,6 +104,7 @@ typedef struct s_player
 	int			sprint;
 }				t_player;
 
+//single ray cast from player
 typedef struct s_ray
 {
 	double		ray_ngl;

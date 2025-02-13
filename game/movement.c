@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 14:03:59 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/12 14:02:58 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:16:27 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,12 @@ void	move_player(t_game *game)
 	handle_strafe_movement(game, move_speed);
 }
 
+/*
+** Handles player rotation
+** Updates direction and camera plane vectors using rotation matrix
+** Maintains angle between 0 and 2π
+** Uses constant rotation speed defined by ROTATION_SPEED
+*/
 void	rotate_player(t_game *game)
 {
 	double	old_dir_x;

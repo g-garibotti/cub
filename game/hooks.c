@@ -6,12 +6,15 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 13:52:16 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/12 14:04:25 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:09:41 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
+// Checks if there's a door within interaction range of the player
+// Returns 1 if a door ('d' or 'D') is found at the check coordinates
+// Returns 0 if coordinates are out of bounds or no door is present
 static int	check_door_interaction(t_game *game, double check_x, double check_y)
 {
 	int	map_x;
@@ -26,6 +29,9 @@ static int	check_door_interaction(t_game *game, double check_x, double check_y)
 		|| game->map.grid[map_y][map_x] == 'D');
 }
 
+// Handles door interaction logic when player presses 'E'
+// Checks for a door in front of the player
+// Toggles door state between open ('D') and closed ('d')
 static void	toggle_door(t_game *game)
 {
 	double	check_x;

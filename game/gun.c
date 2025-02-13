@@ -6,12 +6,13 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 10:42:48 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/12 13:59:22 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/13 10:55:26 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
+// Print gun pixel one by one on screen only if its not transparent color
 static void	draw_gun_pixel(t_game *game, t_data_gun *d, int x, int y)
 {
 	int				screen_x;
@@ -35,6 +36,7 @@ static void	draw_gun_pixel(t_game *game, t_data_gun *d, int x, int y)
 	}
 }
 
+// set data for gun especially scale and position
 static void	init_gun_data(t_data_gun *d, t_texture *tex)
 {
 	d->scale = 15.0;
@@ -65,6 +67,7 @@ static void	draw_gun_sprite(t_game *game, t_texture *tex)
 	}
 }
 
+// make the gun fire
 void	update_gun_animation(t_game *game)
 {
 	if (game->gun.state == GUN_FIRING)
