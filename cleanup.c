@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:14:27 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/12 13:43:58 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/21 14:56:39 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,21 @@ static void	clean_window(t_game *game)
 	game->mlx = NULL;
 }
 
+static void	clean_gun(t_game *game)
+{
+	int	i;
+
+	if (!game)
+		return ;
+	clean_texture(game->mlx, &game->gun.idle);
+	i = 0;
+	while (i < GUN_FRAMES)
+	{
+		clean_texture(game->mlx, &game->gun.fire[i]);
+		i++;
+	}
+}
+
 void	clean_game(t_game *game)
 {
 	if (!game)
@@ -101,6 +116,7 @@ void	clean_game(t_game *game)
 		free(game->temp_map_line);
 		game->temp_map_line = NULL;
 	}
+	clean_gun(game);
 	clean_map(game->mlx, &game->map);
 	clean_window(game);
 	game->bpp = 0;
@@ -108,17 +124,3 @@ void	clean_game(t_game *game)
 	game->endian = 0;
 }
 
-int	clean_exit_msg(char *msg, t_game *game)
-{
-	if (msg)
-	{
-		ft_putstr_fd("Error\n", 2);
-		ft_putstr_fd(msg, 2);
-		ft_putstr_fd("\n", 2);
-	}
-	if (game && game->win && game->mlx)
-		mlx_loop_end(game->mlx);
-	else if (game)
-		clean_game(game);
-	return (1);
-}

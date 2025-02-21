@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:28:04 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/07 14:19:42 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/21 14:39:50 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ static void	validate_map(t_game *game)
 
 void	parse_file(char *file, t_game *game)
 {
+	if (!file)
+		clean_exit_msg("Invalid file path", game);
 	if (!check_file_extension(file))
 		clean_exit_msg("Invalid file extension", game);
 	game->fd = open(file, O_RDONLY);

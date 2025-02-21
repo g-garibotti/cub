@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 12:15:31 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/12 13:46:01 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/21 14:50:29 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 static void	init_gun(t_gun *gun)
 {
-	int	i;
+	int		i;
+	char	*number;
+	char	*temp;
 
 	gun->idle.path = ft_strdup("./textures/gun_idle.xpm");
 	gun->idle.img = NULL;
@@ -22,8 +24,10 @@ static void	init_gun(t_gun *gun)
 	i = 0;
 	while (i < GUN_FRAMES)
 	{
-		gun->fire[i].path = ft_strjoin("./textures/gun_fire_", ft_itoa(i + 1));
-		gun->fire[i].path = ft_strjoin_free(gun->fire[i].path, ".xpm");
+		number = ft_itoa(i + 1);
+		temp = ft_strjoin("./textures/gun_fire_", number);
+		free(number);
+		gun->fire[i].path = ft_strjoin_free(temp, ".xpm");
 		gun->fire[i].img = NULL;
 		gun->fire[i].addr = NULL;
 		i++;
