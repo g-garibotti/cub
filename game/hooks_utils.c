@@ -6,14 +6,14 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:04:41 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/13 11:30:35 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:06:55 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-//delta x detrmine rotation and speed
-//track mouse position change and rotate player
+// delta x detrmine rotation and speed
+// track mouse position change and rotate player
 int	handle_mouse(int x, int y, t_game *game)
 {
 	static int	last_x = -1;
@@ -67,5 +67,6 @@ int	handle_mouse_button(int button, int x, int y, t_game *game)
 
 int	handle_window_close(t_game *game)
 {
-	return (clean_exit_msg(NULL, game));
+	mlx_loop_end(game->mlx);
+	return (0);
 }

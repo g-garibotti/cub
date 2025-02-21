@@ -1,7 +1,7 @@
 
 NAME		= cub3d
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -g3
 MLXFLAGS	= -lmlx -lXext -lX11 -lm
 
 # Colors

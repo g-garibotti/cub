@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 13:52:16 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/13 11:09:41 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/21 17:22:14 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int	key_press(int keycode, t_game *game)
 	if (keycode == KEY_E)
 		toggle_door(game);
 	else if (keycode == KEY_ESC)
-		return (clean_exit_msg(NULL, game));
+		return (handle_window_close(game));
 	else if (keycode == KEY_W)
 		game->player.u_d = 1;
 	else if (keycode == KEY_S)
