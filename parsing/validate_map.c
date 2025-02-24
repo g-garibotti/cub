@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 09:44:44 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/07 14:20:17 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/24 16:34:54 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,34 @@ static int	check_empty_spaces(t_game *game)
 	return (1);
 }
 
+static int	check_door_positions(t_game *game)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < game->map.height)
+	{
+		x = 0;
+		while (x < game->map.width)
+		{
+			if (game->map.grid[y][x] == 'd' || game->map.grid[y][x] == 'D')
+			{
+				if (x == 0 || x == game->map.width - 1 || y == 0
+					|| y == game->map.height - 1)
+					return (0);
+				if (!((game->map.grid[y][x - 1] == '1' && game->map.grid[y][x
+							+ 1] == '1') || (game->map.grid[y - 1][x] == '1'
+							&& game->map.grid[y + 1][x] == '1')))
+					return (0);
+			}
+			x++;
+		}
+		y++;
+	}
+	return (1);
+}
+
 void	map_validation(t_game *game)
 {
 	char	**map_copy;
@@ -80,6 +108,8 @@ void	map_validation(t_game *game)
 		clean_exit_msg("Invalid character in map", game);
 	if (has_door_chars(game) && !game->map.door.path)
 		clean_exit_msg("Door in map but no door texture specified", game);
+	if (has_door_chars(game) && !check_door_positions(game))
+		clean_exit_msg("Door placed in invalid position", game);
 	if (!find_player(game))
 		clean_exit_msg("Invalid player position or count", game);
 	if (!check_empty_spaces(game))

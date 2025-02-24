@@ -1,1 +1,0 @@
-if there is no path for DO and there is a d or a D in the map exit
