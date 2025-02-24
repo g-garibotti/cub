@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 09:44:44 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/24 16:34:54 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/24 16:54:33 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,28 @@ static int	check_empty_spaces(t_game *game)
 	return (1);
 }
 
+static int	check_adjacent_cell(t_game *game, int y, int x, char cell_type)
+{
+	int	count;
+
+	count = 0;
+	if (x > 0 && game->map.grid[y][x - 1] == cell_type)
+		count++;
+	if (x < game->map.width - 1 && game->map.grid[y][x + 1] == cell_type)
+		count++;
+	if (y > 0 && game->map.grid[y - 1][x] == cell_type)
+		count++;
+	if (y < game->map.height - 1 && game->map.grid[y + 1][x] == cell_type)
+		count++;
+	return (count);
+}
+
 static int	check_door_positions(t_game *game)
 {
 	int	x;
 	int	y;
+	int	wall_count;
+	int	floor_count;
 
 	y = 0;
 	while (y < game->map.height)
@@ -85,12 +103,9 @@ static int	check_door_positions(t_game *game)
 		{
 			if (game->map.grid[y][x] == 'd' || game->map.grid[y][x] == 'D')
 			{
-				if (x == 0 || x == game->map.width - 1 || y == 0
-					|| y == game->map.height - 1)
-					return (0);
-				if (!((game->map.grid[y][x - 1] == '1' && game->map.grid[y][x
-							+ 1] == '1') || (game->map.grid[y - 1][x] == '1'
-							&& game->map.grid[y + 1][x] == '1')))
+				wall_count = check_adjacent_cell(game, y, x, '1');
+				floor_count = check_adjacent_cell(game, y, x, '0');
+				if (wall_count != 2 || floor_count != 2)
 					return (0);
 			}
 			x++;
