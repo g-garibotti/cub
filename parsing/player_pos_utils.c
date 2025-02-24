@@ -6,7 +6,7 @@
 /*   By: ggaribot <ggaribot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 14:12:30 by ggaribot          #+#    #+#             */
-/*   Updated: 2025/02/07 14:19:48 by ggaribot         ###   ########.fr       */
+/*   Updated: 2025/02/24 13:43:23 by ggaribot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ int	check_player_position(t_game *game, int x, int y)
 
 void	update_player_pos(t_game *game, int x, int y)
 {
-	game->player.pos_x = x;
-	game->player.pos_y = y;
+	game->player.pos_x = x + 0.5;
+	game->player.pos_y = y + 0.5;
 	game->player.orientation = game->map.grid[y][x];
 	init_player_direction(&game->player);
 }
