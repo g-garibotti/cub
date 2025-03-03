@@ -1,83 +1,104 @@
 # cub3D
 
-A 3D maze explorer using raycasting technique inspired by Wolfenstein 3D.
+![C](https://img.shields.io/badge/language-C-blue.svg)
+
+A 3D raycasting engine inspired by Wolfenstein 3D, built with the MiniLibX graphics library.
+
+## Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Game Controls](#game-controls)
+- [Map Format](#map-format)
+- [Project Structure](#project-structure)
+- [Technical Details](#technical-details)
+- [Challenges and Solutions](#challenges-and-solutions)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Overview
 
-cub3D is a first-person 3D maze explorer built with raycasting technology. This project aims to recreate the essence of the revolutionary Wolfenstein 3D game, which pioneered the first-person shooter genre. The core challenge is to build a dynamic view inside a maze where players navigate through walls with different textures based on orientation.
+cub3D is a first-person 3D maze explorer that uses raycasting technology to create a 3D perspective in a 2D map. This project reimagines the groundbreaking Wolfenstein 3D game, showcasing skills in 3D graphics programming, efficient rendering algorithms, and game development principles in C.
 
 ## Features
 
-- 3D maze rendering using raycasting technique
-- Textured walls with different textures for north, south, east, and west faces
-- First-person camera movement (WASD keys) and rotation (arrow keys)
-- Minimap display for navigation assistance
-- Animated weapon rendering
+- Raycasting-based 3D rendering
+- Textured walls with orientation-specific textures (north, south, east, west)
+- First-person navigation through maze environments
+- Minimap for spatial awareness
 - Interactive doors that can be opened and closed
-- Wall collision detection
+- Animated weapon rendering with firing effects
 - Mouse-controlled camera rotation
+- Wall collision detection
 - Customizable floor and ceiling colors
 
 ## Requirements
 
-- Linux environment (Ubuntu recommended)
 - GCC compiler
 - Make
-- MinilibX graphical library
+- MiniLibX library
+- X11 include files (for Linux)
+- Math library
 
 ## Installation
 
 1. Clone the repository:
    ```
-   git clone https://github.com/g-garibotti/cub
+   git clone https://github.com/yourusername/cub3D.git
+   ```
+2. Navigate to the project directory:
+   ```
    cd cub3D
    ```
-
-2. Compile the project:
+3. Compile the project:
    ```
    make
    ```
 
 ## Usage
 
-Run the program with a map file as argument:
+Run the game with a map file:
+
 ```
 ./cub3D maps/test_valid.cub
 ```
 
-### Controls
+## Game Controls
 
-- `W` - Move forward
-- `S` - Move backward
-- `A` - Strafe left
-- `D` - Strafe right
-- `←` / `→` - Rotate camera left/right
-- `E` - Interact with doors (open/close)
-- `Mouse` - Look around
-- `Left Mouse Button` - Fire weapon
-- `Shift` - Sprint
-- `ESC` - Exit game
+- Move Forward: `W`
+- Move Backward: `S`
+- Strafe Left: `A`
+- Strafe Right: `D`
+- Rotate Camera Left: `←`
+- Rotate Camera Right: `→`
+- Interact with Doors: `E`
+- Look Around: Mouse movement
+- Fire Weapon: Left Mouse Button
+- Sprint: `Shift`
+- Quit Game: `ESC` or close window
 
 ## Map Format
 
 Maps are defined in `.cub` files with the following structure:
 
 ```
-NO ./path_to_the_north_texture
-SO ./path_to_the_south_texture
-WE ./path_to_the_west_texture
-EA ./path_to_the_east_texture
-DO ./path_to_the_door_texture (optional)
+NO ./path_to_the_north_texture.xpm
+SO ./path_to_the_south_texture.xpm
+WE ./path_to_the_west_texture.xpm
+EA ./path_to_the_east_texture.xpm
+DO ./path_to_the_door_texture.xpm (optional)
 
-F R,G,B    # Floor color in RGB format
-C R,G,B    # Ceiling color in RGB format
+F R,G,B    # Floor color in RGB format (0-255)
+C R,G,B    # Ceiling color in RGB format (0-255)
 
 # Map layout (must be the last element in the file)
-1111111111
-1000000001
-100N000001
-1000000001
-1111111111
+111111111111
+100000000001
+100N000d0001
+100000000001
+111111111111
 ```
 
 ### Map Symbols
@@ -87,51 +108,71 @@ C R,G,B    # Ceiling color in RGB format
 - `N`, `S`, `E`, `W` - Player starting position and orientation
 - `d` - Closed door
 - `D` - Open door
-- ` ` (space) - Void (outside the map)
+- `X` or ` ` (space) - Void (outside the map)
 
-### Map Rules
+## Project Structure
 
-- The map must be enclosed by walls (`1`)
-- Only one player position is allowed
-- The map can be of any shape as long as it's closed
+- `main.c`: Entry point and game initialization
+- `init.c`, `game_init.c`: Game and structure initialization
+- `cleanup.c`: Memory management and cleanup
+- `hooks.c`, `hooks_utils.c`: Event handling and input management
+- `dda.c`, `raycast.c`: Core raycasting implementation
+- `movement.c`: Player movement and collision detection
+- `init_player_pos.c`, `player_pos_utils.c`: Player positioning and orientation
+- `texture.c`, `texture_load.c`: Texture loading and rendering
+- `parser.c`, `parser_utils.c`: Map parsing and validation
+- `fill_grid.c`, `parse_color.c`, `parse_texture.c`: Map element processing
+- `validate_map.c`, `validate_map_utils.c`: Map validation algorithms
+- `minimap.c`: Minimap rendering
+- `gun.c`: Weapon rendering and animation
+- `vectors.c`: Vector calculations and utilities
 
 ## Technical Details
 
-### Architecture
+### Raycasting Engine
+- Implements Digital Differential Analysis (DDA) algorithm for efficient ray casting
+- Calculates wall distances and heights for 3D perspective illusion
+- Applies textures based on wall orientation and impact point
 
-The project is structured around several key components:
+### Map Parsing and Validation
+- Loads and validates map files with comprehensive error checking
+- Ensures maps are enclosed and properly formatted
+- Validates player position, textures, and color declarations
 
-1. **Raycasting Engine**: The core rendering system that creates the 3D illusion
-2. **Player Controls**: Handle movement and rotation in the 3D space
-3. **Map Parser**: Reads and validates map files
-4. **Texture Management**: Loads and applies textures to walls
-5. **Minimap System**: Provides a top-down view for navigation
-6. **Game Loop**: Coordinates rendering, input handling, and game state
+### Texture Management
+- Loads textures from XPM files using MiniLibX
+- Maps textures to walls based on orientation and position
+- Handles transparent pixels for weapon animations
 
-### Performance Considerations
+### Game Logic
+- Implements collision detection with walls and doors
+- Provides door interaction mechanics
+- Handles player movement with precise vector calculations
 
-- Uses Digital Differential Analysis (DDA) algorithm for efficient raycasting
-- Optimized texture mapping to minimize distortion
-- Efficient collision detection
+### Memory Management
+- Careful allocation and deallocation to prevent memory leaks
+- Proper cleanup of all allocated resources, including MiniLibX objects
 
-## Development
+## Challenges and Solutions
 
-### Dependencies
+1. **Challenge**: Implementing efficient raycasting algorithm
+   **Solution**: Used DDA algorithm with optimized calculations to minimize processing overhead
 
-- **libft**: Custom C standard library
-- **MinilibX**: Simple X-Window graphical library
+2. **Challenge**: Realistic texture mapping with proper perspective
+   **Solution**: Implemented wall coordinate calculation based on ray intersection point
 
-### Compilation
+3. **Challenge**: Handling different wall orientations
+   **Solution**: Determined wall faces based on ray direction and map coordinates
 
-The project includes a Makefile with the following rules:
-- `make` or `make all`: Compile the program
-- `make clean`: Remove object files
-- `make fclean`: Remove object files and executable
-- `make re`: Rebuild the program
+4. **Challenge**: Creating smooth player movement and rotation
+   **Solution**: Implemented frame-independent movement and rotation with vector-based calculations
 
-## Credits
+5. **Challenge**: Interactive door system
+   **Solution**: Designed a state-based door system with proper collision handling
 
-This project is inspired by the classic game Wolfenstein 3D by id Software, created by John Carmack and John Romero.
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
