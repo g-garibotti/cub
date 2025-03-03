@@ -46,7 +46,7 @@ cub3D is a first-person 3D maze explorer that uses raycasting technology to crea
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/cub3D.git
+   git clone https://github.com/g-garibotti/cub
    ```
 2. Navigate to the project directory:
    ```
