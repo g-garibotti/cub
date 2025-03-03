@@ -2,8 +2,6 @@
 
 A 3D maze explorer using raycasting technique inspired by Wolfenstein 3D.
 
-![cub3D preview](screenshots/preview.png)
-
 ## Overview
 
 cub3D is a first-person 3D maze explorer built with raycasting technology. This project aims to recreate the essence of the revolutionary Wolfenstein 3D game, which pioneered the first-person shooter genre. The core challenge is to build a dynamic view inside a maze where players navigate through walls with different textures based on orientation.
